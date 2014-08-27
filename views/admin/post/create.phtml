@@ -1,0 +1,496 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+        <i class="icon-home home-icon"></i>
+        <a href="/admin/dashboard">Home</a>
+        </li>
+
+        <li>
+        <a href="/admin/post">Post</a>
+        </li>
+
+        <?if(empty($item->id)):?>
+        <li class="active">Write New Post</li>
+        <?else:?>
+        <li class="active">Edit Post</li>
+        <?endif?>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="icon-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div><!-- #nav-search -->
+</div>
+<?$textForm = $form->getForm('text')?>
+<form id="" action="" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+    <div class="page-content">
+
+        <div class="widget-box transparent">
+            <div class="page-header">
+                <div class="widget-toolbar no-border">
+                    <ul id="post-tab" class="nav nav-tabs">
+                        <li class="active">
+                        <a href="#post-tab-basic" data-toggle="tab">Basic</a>
+                        </li>
+                        <li>
+                        <a href="#post-tab-extra" data-toggle="tab">Extra</a>
+                        </li>
+                    </ul>
+                </div>
+                <?if(empty($item->id)):?>
+                <h1>Write New Post</h1>
+                <?else:?>
+                <h1>Edit Post</h1>
+                <?endif?>
+            </div><!-- /.page-header -->
+
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+                    <div class="tab-content padding-4">
+                        <div class="tab-pane in active" id="post-tab-basic">
+
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <!-- PAGE CONTENT BEGINS -->
+
+                                    <div class="form-group">
+                                        <label class="block clearfix">
+                                            <?=$form->render('title', array(
+                                                'class' => 'form-control input-lg  slug-generator',
+                                                'data-slug-target' => '#slug',
+                                                'placeholder' => 'Title',
+                                                'required' => 'required',
+                                            ))?>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon input-sm">
+                                                <i class="icon-link"></i>  http://www.goldtoutiao.com/post/
+                                            </span>
+                                            <?=$form->render('slug', array(
+                                                'class' => 'form-control input-sm',
+                                                'placeholder' => 'Url, No fill will generate a random url',
+                                                'data-parsley-trigger' => "blur change",
+                                                'data-parsley-remote' => "/admin/post/process/slug",
+                                                'data-parsley-remote-options' => empty($item->id) ? '{ method: "GET", dataType: "json"}' : '{ "method": "GET", "dataType": "json", "data": { "exclude" : "' . $item->id . '"} }',
+                                                'data-parsley-remote-message' => "This url has been taken",
+                                            ))?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="widget-box transparent">
+                                            <div class="widget-header">
+                                                <h4 class="lighter">Content</h4>
+                                                <div class="widget-toolbar no-border ">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-sm btn-info editor-open-media-handle">
+                                                            <i class="icon-plus align-top bigger-125"></i>
+                                                            Select Media
+                                                        </button>
+
+                                                        <span class="btn btn-sm btn-purple fileinput-button">
+                                                            <i class="icon-cloud-upload align-top bigger-125"></i>
+                                                            Upload Media
+                                                            <input type="file" multiple  class="editor-upload-handle" data-connect-editor=".editor-content" />
+                                                        </span>
+
+                                                        <ul id="switch-code" class="nav nav-tabs hide">
+                                                            <li class="">
+                                                            <a href="#format-markdown" data-toggle="tab">Markdown</a>
+                                                            </li>
+                                                            <li>
+                                                            <a href="#format-html" data-toggle="tab">Html</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div><!--widget box header-->
+                                        </div><!--widget box end-->
+
+                                        <label class="block clearfix">
+
+                                            <div class="markdown-editor">
+                                                <?=$textForm->render('content', array(
+                                                    'class' => 'form-control editor editor-content',
+                                                    //'class' => 'form-control wysiwyg',
+                                                    'rows' => 12,
+                                                    'required' => 'required',
+                                                ))?>
+                                                <?=$form->render('codeType', array(
+                                                ))?>
+                                            </div>
+                                            <!--
+                                            <button id="test">test</button>
+                                            -->
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="block clearfix">
+                                            <h5 class="lighter">Summary</h5>
+                                            <div class="markdown-editor">
+                                                <?=$form->render('summary', array(
+                                                    'class' => 'form-control editor editor-summary',
+                                                    'rows' => 3,
+                                                ))?>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                </div><!-- /.col -->
+                                <div class="col-xs-3">
+
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Publish</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+
+                                                <?$status = array(
+                                                    'draft' => 'label-info',
+                                                    'pending' => 'label-warning',
+                                                    'deleted' => 'label',
+                                                    'published' => 'label-success',
+                                                )?>
+                                                <?if(!empty($item->id)):?>
+                                                <ul class="list-unstyled">
+                                                    <li>Created At : <?=$this->tag->datetime($item->createdAt)?></li>
+                                                    <li>Status : <span class="label label-sm <?=$status[$item->status]?>"><?=$item->status?></span></li>
+                                                    <li>Autor : <?=$item->user ? $item->user->username : ''?></li>
+                                                    <li>Source : <?if($item->sourceName):?><a href="<?=$item->sourceUrl ? $item->sourceUrl : '#'?>" target="_blank"><?=$item->sourceName?><?endif?></a></li>
+                                                </ul>
+                                                <?endif?>
+                                                <fieldset>
+                                                    <label for="status">
+                                                        Status
+                                                    </label>
+                                                    <?=$form->render('status', array(
+                                                        'class' => 'form-control',
+                                                    ))?>
+                                                </fieldset>
+                                            </div>
+                                            <div class="clearfix form-actions no-margin">
+                                                <input name="__redirect" type="hidden" value="" />
+                                                <button type="submit" class="btn form-submiter" data-change-name="status" data-change-value="draft">
+                                                    <i class="icon-save"></i>
+                                                    Save Draft
+                                                </button>
+                                                <button type="submit" class="btn btn-info form-submiter" data-change-name="status" data-change-value="published">
+                                                    <i class="icon-ok"></i>
+                                                    Publish
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Image</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <?if(!empty($item->image)):?>
+                                                <img src="<?=$this->tag->thumb($item->image, 'w_300')?>" alt="" width="100%" />
+                                                <?endif?>
+                                                <div class="paste-uploader" data-upload-url="/admin/upload/encode" data-upload-allow-num="1" data-upload-allow-type="" data-upload-maxsize="" data-callback="">
+                                                    <?=$form->render('image', array())?>
+                                                    <?=$form->render('imageId', array())?>
+                                                </div>
+                                                <input name="upload" type="file" class="ace-file-input"  multiple="">
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Categories</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="control-group">
+                                                    <?$categories = $form->getCategories()?>
+                                                    <?if($categories):?>
+                                                    <?foreach($categories as $key => $category):?>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <?=$category->render(array(
+                                                                'class' => 'ace',
+                                                            ))?>
+                                                            <span class="lbl"> <?=$category->getLabel()?></span>
+                                                        </label>
+                                                    </div>
+                                                    <?endforeach?>
+                                                    <?endif?>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Tags</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Enter Tags ..." value="<?=$item ? $item->getTagString() : ''?>" name="tags" class="tag-input form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box collapsed">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Publish Time</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-down"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="input-group">
+                                                    <input name="day" type="text" data-date-format="yyyy-mm-dd" class="form-control date-picker" value="<?=empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'Y-m-d')?>">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-calendar bigger-110"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group bootstrap-timepicker">
+                                                    <input name="time" type="text" class="form-control time-picker" value="<?=empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'H:i:s')?>">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-time bigger-110"></i>
+                                                    </span>
+                                                    <?=$form->render('createdAt', array(
+                                                    ))?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box collapsed">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Change Author</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-down"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="control-group">
+                                                    <label class="block clearfix">
+                                                        <?=$form->render('username', array(
+                                                            'class' => 'form-control autocomplete',
+                                                            'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
+                                                            'data-autocomplete-target' => 'input[name=userId]',
+                                                            'data-autocomplete-fill-name' => 'id',
+                                                            'data-autocomplete-display-key' => 'username',
+                                                            'data-autocomplete-clear-fill-when-nomatch' => '1',
+                                                            'placeholder' => 'Use current user with no fill',
+                                                        ))?>
+                                                        <?=$form->render('userId', array(
+                                                            'class' => 'form-control',
+                                                        ))?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box collapsed">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Post Source</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-down"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="control-group">
+                                                    <label class="block clearfix">
+                                                        Source Name
+                                                        <?=$form->render('sourceName', array(
+                                                            'class' => 'form-control',
+                                                        ))?>
+                                                    </label>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="block clearfix">
+                                                        Source Url 
+                                                        <?=$form->render('sourceUrl', array(
+                                                            'class' => 'form-control',
+                                                        ))?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                </div><!-- /.col -->
+
+                            </div><!-- /.row -->
+
+                        </div><!--tab pane end-->
+                        <div class="tab-pane in" id="post-tab-extra">
+                            <div class="form-group">
+                                <label class="clearfix">
+                                    <h5 class="lighter">Keywords</h5>
+                                </label>
+                                <?=$textForm->render('metaKeywords', array(
+                                    'class' => 'form-control',
+                                ))?>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="clearfix">
+                                    <h5 class="lighter">Description</h5>
+                                </label>
+                                <?=$textForm->render('metaDescription', array(
+                                    'class' => 'form-control',
+                                    'rows' => 3,
+                                ))?>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="clearfix">
+                                    <h5 class="lighter">Related Posts</h5>
+                                </label>
+                                <div id="post-connection-entry" data-url="/admin/post/process/connection" data-method="POST" data-key="url">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-mask-date" placeholder="Enter a post url" data-role="url">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-sm btn-default" data-role="submiter">
+                                                <i class="icon-plus bigger-110"></i>
+                                                Add
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div role="previewer">
+                                        <ul class="item-list ui-sortable">
+                                            <li class="hide"></li>
+                                            <script data-role="template" type="text/template">
+                                                <li class="item-blue">
+                                                <label class="inline">
+                                                    <span class="lbl"><%=title%></span>
+                                                    <input type="hidden" name="connectids[]" value="<%=id%>">
+                                                </label>
+                                                <div class="pull-right action-buttons">
+                                                    <a class="red" href="#">
+                                                        <i class="icon-remove bigger-130" data-role="remove"></i>
+                                                    </a>
+                                                </div>
+                                                </li>
+                                            </script>
+                                            <?if($item->connections):?>
+                                            <?foreach($item->connections as $connectPost):?>
+                                            <li class="item-blue">
+                                                <label class="inline">
+                                                    <span class="lbl"><?=$connectPost->title?></span>
+                                                    <input type="hidden" name="connectids[]" value="<?=$connectPost->id?>">
+                                                </label>
+                                                <div class="pull-right action-buttons">
+                                                    <a class="red" href="#">
+                                                        <i class="icon-remove bigger-130" data-role="remove"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <?endforeach?>
+                                            <?endif?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!--tab content end-->
+                </div><!--widget main end-->
+            </div><!--widget body end-->
+        </div><!--widget box end-->
+
+    </div><!-- /.page-content -->
+</form>
+
+<script>
+    $(document).ready(function(){
+        var connectionUI = $("#post-connection-entry");
+        connectionUI.on('click', '[data-role="submiter"]', function(){
+            var url = connectionUI.find("[data-role=url]").val();
+            if(url.length < 1 || !url.match(/^http/)) {
+                return;
+            }
+            $.ajax({
+                url : connectionUI.attr("data-url"), 
+                method : connectionUI.attr("data-method"),
+                data : {
+                    url : url
+                }
+            }).then(function(response) {
+                if(!response.id) {
+                    return;
+                }
+                var template = connectionUI.find('[data-role=template]');
+                template.after(_.template(template.html(), response));
+            }).fail(function(error) {});
+        });
+        connectionUI.on('click', '[data-role="remove"]', function(){
+            $(this).closest('li').remove();
+            return false;
+        });
+
+        var updateCreateTime = function(){
+            var day = $('input[name=day]').val();
+            var time = $('input[name=time]').val();
+            time = time.length == 7 ? '0' + time : time;
+            var timestamp = moment(day + ' ' + time).format('X');
+            $('input[name=createdAt]').val(timestamp);
+        }
+        $('input[name=day], input[name=time]').on('change', updateCreateTime);
+    });
+</script>

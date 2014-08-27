@@ -1,0 +1,183 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+        <i class="icon-home home-icon"></i>
+        <a href="/admin/dashboard">Home</a>
+        </li>
+
+        <li>
+        <a href="/admin/post">Post</a>
+        </li>
+        <li class="active">
+        <a href="/admin/category">Category</a>
+        </li>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <!--
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="icon-search nav-search-icon"></i>
+            </span>
+        </form>
+        -->
+    </div><!-- #nav-search -->
+</div>
+
+<form id="" action="" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+    <div class="page-content">
+        <div class="page-header">
+            <?if(empty($item->id)):?>
+            <h1>Create New Category</h1>
+            <?else:?>
+            <h1>Edit Category</h1>
+            <?endif?>
+        </div><!-- /.page-header -->
+
+        <div class="row">
+            <div class="col-xs-9">
+                <!-- PAGE CONTENT BEGINS -->
+
+                <div class="form-group">
+                    <?=$form->render('id', array())?>
+                    <label class="block clearfix">
+                        <?=$form->render('categoryName', array(
+                            'class' => 'form-control input-lg',
+                            'placeholder' => 'Title',
+                            'required' => 'required',
+                        ))?>
+                    </label>
+
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon input-sm">
+                            <i class="icon-link"></i>  http://www.goldtoutiao.com/admin/category/
+                        </span>
+                        <?=$form->render('slug', array(
+                            'class' => 'form-control input-sm',
+                            'placeholder' => 'Url, No fill will generate a random url',
+                        ))?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="block clearfix">
+                        <div id="epiceditor">
+                            <?=$form->render('description', array(
+                                'class' => 'form-control',
+                                //'class' => 'form-control wysiwyg',
+                                'rows' => 4,
+                            ))?>
+                        </div>
+                    </label>
+                </div>
+                <!--
+                <div class="form-group">
+                    <div id="test" contenteditable="true" style="height:100px;background:#CCC;"></div>
+                </div>
+                -->
+
+                <!--
+                <div class="clearfix form-actions">
+                    <button type="submit" class="btn btn-info">
+                        <i class="icon-ok bigger-110"></i>
+                        Submit
+                    </button>
+                </div>
+                <div class="hr hr-double dotted"></div>
+                -->
+            </div><!-- /.col -->
+            <div class="col-xs-3">
+
+                <div class="widget-box">
+                    <div class="widget-header widget-header-small">
+                        <h4>Publish</h4>
+                        <span class="widget-toolbar">
+                            <a data-action="collapse" href="#">
+                                <i class="icon-chevron-up"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <fieldset>
+                                <?if(!empty($item->createdAt)):?>
+                                Created At: <?=$this->tag->datetime($item->createdAt)?>
+                                <?endif?>
+                            </fieldset>
+                        </div>
+                        <div class="clearfix form-actions no-margin">
+                            <input type="hidden" name="__redirect" value="" />
+                            <button type="submit" class="btn btn-info">
+                                <i class="icon-save"></i>
+                                Save
+                            </button>
+                            <button type="submit" class="btn btn-info" data-redirect-url="/admin/category/create">
+                                <i class="icon-ok"></i>
+                                Save &amp; Add Another
+                            </button>
+                        </div>
+                    </div>
+                </div><!--widgex box-->
+
+                <div class="hr hr-double dotted"></div>
+                <div class="widget-box">
+                    <div class="widget-header widget-header-small">
+                        <h4>Image</h4>
+                        <span class="widget-toolbar">
+                            <a data-action="collapse" href="#">
+                                <i class="icon-chevron-up"></i>
+                            </a>
+                        </span>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <?if(!empty($item->image)):?>
+                            <img src="<?=$item->image?>" alt="" width="100%" />
+                            <?endif?>
+                            <div class="paste-uploader" data-upload-url="/admin/upload/encode" data-upload-allow-num="1" data-upload-allow-type="" data-upload-maxsize="" data-callback="">
+                            <?=$form->render('image', array())?>
+                            <?=$form->render('imageId', array())?>
+                            </div>
+                            <input name="upload" type="file" class="ace-file-input"  multiple="">
+                        </div>
+                    </div>
+                </div><!--widgex box-->
+
+                <div class="hr hr-double dotted"></div>
+                <div class="widget-box">
+                    <div class="widget-header widget-header-small">
+                        <h5 class="lighter">Parent</h5>
+                        <span class="widget-toolbar">
+                            <a data-action="collapse" href="#">
+                                <i class="icon-chevron-up"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <?if(empty($item->id)):?>
+                            <?=$form->render('parentId', array(
+                                'class' => 'select2 form-control',
+                            ))?>
+                            <?else:?>
+                            <?=$form->render('parentId', array(
+                                'class' => 'select2 form-control',
+                                'disabled' => 'disabled',
+                            ))?>
+                            <?endif?>
+                        </div>
+                    </div>
+                </div><!--widgex box-->
+
+            </div><!-- /.col -->
+
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</form>

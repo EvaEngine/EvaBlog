@@ -1,0 +1,25 @@
+{
+    "name": "allovince/evablog",
+    "description": "Standard Blog Module of EvaEngine",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+        "name": "AlloVince",
+        "email": "allo.vince@gmail.com",
+        "homepage": "http://avnpc.com"
+    }
+    ],
+    "require": {
+	"allovince/evacommon" : "dev-master",
+        "erusev/parsedown": "dev-master"
+    },
+    "suggest": {
+        "allovince/evauser": "dev-master",
+	"allovince/evafilesystem": "dev-master"
+    },
+    "autoload": {
+	"classmap" : ["Module.php"],
+        "psr-4": {"Eva\\EvaBlog\\": "src/EvaBlog"}
+    }
+}

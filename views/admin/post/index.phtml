@@ -1,0 +1,207 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+        <i class="icon-home home-icon"></i>
+        <a href="/admin/dashboard">Home</a>
+        </li>
+
+        <li>
+        <a href="/admin/post" class="active">Post List</a>
+        </li>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="icon-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 class="header smaller lighter blue">
+                Post List
+                <a href="/admin/post/create" class="btn btn-sm"><i class="icon-pencil align-top bigger-125"></i> Write New</a>
+            </h3>
+            <div class="table-header">
+                Showing <?=$pager->offset_start?> to <?=$pager->offset_end?> of <?=$pager->total_items?> Posts 
+            </div>
+
+            <div class="table-responsive dataTables_wrapper">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <?=$form->render('q', array(
+                                    'placeholder' => 'Keyword',
+                                    'class' => 'form-control input-sm'
+                                ))?>
+                            </div>
+                            <div class="form-group">
+                                <?=$form->render('status', array(
+                                    'class' => 'form-control input-sm'
+                                ))?>
+                            </div>
+                            
+                            <div class="form-group">
+                                <?=$form->render('uid', array())?>
+                                <?=$form->render('username', array(
+                                    'placeholder' => 'Username',
+                                    'class' => 'form-control input-sm autocomplete',
+                                    'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
+                                    'data-autocomplete-target' => 'input[name=uid]',
+                                    'data-autocomplete-fill-name' => 'id',
+                                    'data-autocomplete-display-key' => 'username',
+                                ))?>
+                            </div>
+                            <div class="form-group">
+                                <?=$form->render('source_name', array(
+                                    'class' => 'form-control input-sm',
+                                    'placeholder' => 'Source',
+                                ))?>
+                            </div>
+                            <div class="form-group">
+                                <?=$form->render('cid', array(
+                                    'class' => 'form-control input-sm'
+                                ))?>
+                            </div>
+                           <span>
+                                <label for="filter-from-limit">Display</label> 
+                            </span>
+                            <div class="form-group">
+                                <?=$form->render('per_page', array(
+                                    'class' => 'form-control input-sm'
+                                ))?>
+                            </div>
+                            <button class="btn btn-info btn-sm form-control" type="submit">
+                                <i class="icon-search bigger-110"></i>
+                                Filter 
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-hover dataTable  table-sortable" id="post-grid" data-sortable-key="order" data-sortable-default="-created_at">
+                    <thead>
+                        <tr>
+                            <th class="center">
+                                <label>
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th class="hidden-480">
+                                <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="id">ID</a>
+                            </th>
+                            <th>Title</th>
+                            <th class="hidden-480">Status</th>
+                            <th>
+                                <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="sort_order" data-sortable-default="-sort_order">Order</a>
+                            </th>
+                            <th>User</th>
+                            <th>Count</th>
+                            <th>
+                                <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="created_at" data-sortable-default="-created_at">
+                                    <i class="icon-time bigger-110"></i>
+                                    Created At
+                                </a>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?foreach($pager->items as $item):?>
+                        <tr>
+                            <td class="center">
+                                <label>
+                                    <input type="checkbox" class="ace" value="<?=$item->id?>"  data-batch-source="<?=$item->id?>">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                            <td class="hidden-480"><?=$item->id?></td>
+                            <td>
+                                <a href="/admin/post/edit/<?=$item->id?>"><?=$item->title?></a>
+                                <?if($item->sourceName):?><a href="<?=$item->sourceUrl?>" target="_blank"><span class="label"><?=$item->sourceName?></span></a><?endif?>
+                                <span class="label"><?=$item->codeType?></span>
+                            </td>
+                            <td class="hidden-480">
+                                <?$status = array(
+                                    'draft' => 'label-info',
+                                    'pending' => 'label-warning',
+                                    'deleted' => 'label',
+                                    'published' => 'label-success',
+                                )?>
+                                <span class="label label-sm <?=$status[$item->status]?>"><?=$item->status?></span>
+                            </td>
+                            <td>
+                                <input class="form-control input-mini ajax-field-edit" value="<?=$item->sortOrder?>" data-name="sortOrder" date-method="put" data-form-action="/admin/post/process/sort/<?=$item->id?>" data-callback="input.parent().addClass('has-success')" />
+                            </td>
+                            <td><?=$item->user ? $item->user->username : ''?></td>
+                            <td><?=$item->count?></td>
+                            <td><?=$this->tag->datetime($item->createdAt)?></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-xs btn-success ajax-form-sumbit" data-ajax-form="1" date-method="put" data-form-action="/admin/post/process/status/<?=$item->id?>" data-callback="window.location.reload();">
+                                        <input type="hidden" data-name="status" value="published" >
+                                        <i class="icon-ok bigger-120"></i>
+                                    </button>
+
+                                    <a class="btn btn-xs btn-info" href="/admin/post/edit/<?=$item->id?>">
+                                        <i class="icon-edit bigger-120"></i>
+                                    </a>
+
+                                    <button class="btn btn-xs ajax-form-sumbit" data-ajax-form="1" date-method="put" data-form-action="/admin/post/process/status/<?=$item->id?>" data-callback="window.location.reload();">
+                                        <input type="hidden" data-name="status" value="deleted" >
+                                        <i class="icon-eye-close bigger-120"></i>
+                                    </button>
+
+                                    <button class="btn btn-xs btn-danger ajax-form-sumbit" data-ajax-form="1" date-method="delete" data-form-action="/admin/post/process/delete/<?=$item->id?>" data-confirm="1" data-confirm-message="<?=sprintf('Item %s will be deleted, are you sure?', $item->title)?>" data-callback="form.closest('tr').hide();">
+                                        <i class="icon-trash bigger-120"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?endforeach?>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="btn-group">
+                            <button class="btn btn-xs btn-success ajax-form-sumbit" data-batch-form="1" data-source-name="id" data-source-selectors="#post-grid input[data-batch-source]" date-method="put" data-form-action="/admin/post/process/batch" data-callback="window.location.reload();">
+                                <input type="hidden" data-name="status" value="published" >
+                                <i class="icon-ok bigger-120"></i>
+                            </button>
+
+                            <button class="btn btn-xs ajax-form-sumbit" data-batch-form="1" data-source-name="id" data-source-selectors="#post-grid input[data-batch-source]" date-method="put" data-form-action="/admin/post/process/batch" data-callback="window.location.reload();">
+                                <input type="hidden" data-name="status" value="deleted" >
+                                <i class="icon-eye-close bigger-120"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate">
+                            <?$this->partial("partial/paginator", array(
+                                'pagerUrl' => '/admin/post',
+                                'pager' => $pager,
+                            ))?>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!--/table div-->
+
+        </div><!-- /col-->
+    </div><!--row end-->
+
+</div><!-- /.page-content -->

@@ -1,0 +1,133 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    </script>
+
+    <ul class="breadcrumb">
+        <li>
+        <i class="icon-home home-icon"></i>
+        <a href="/admin/dashboard">Home</a>
+        </li>
+
+        <li>
+        <a href="/admin/post">Post</a>
+        </li>
+        <li class="active">Category</li>
+    </ul><!-- .breadcrumb -->
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+            <span class="input-icon">
+                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                <i class="icon-search nav-search-icon"></i>
+            </span>
+        </form>
+    </div><!-- #nav-search -->
+</div>
+
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 class="header smaller lighter blue">
+                Category List
+                <a href="/admin/category/create" class="btn btn-sm"><i class="icon-pencil align-top bigger-125"></i> Create New</a>
+            </h3>
+            <div class="table-header">
+                <?if($pager->total_items > 0):?>
+                Showing <?=$pager->offset_start?> to <?=$pager->offset_end?> of <?=$pager->total_items?> Items 
+                <?endif?>
+            </div>
+
+            <div class="table-responsive dataTables_wrapper">
+                <!--
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form class="form-inline">
+                            <input type="text" name="q" placeholder="Keyword" class="input-small">
+                            <label>Display <select size="1" name="limit"><option selected="selected" value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> records</label>
+                            <button class="btn btn-info btn-sm" type="submit">
+                                <i class="icon-key bigger-110"></i>
+                                Filter 
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+                -->
+                <table class="table table-striped table-bordered table-hover dataTable" id="post-category-grid">
+                    <thead>
+                        <tr>
+                            <th class="center">
+                                <label>
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th class="hidden-480">ID</th>
+                            <th>Name</th>
+                            <th>
+                                <i class="icon-time bigger-110 hidden-480"></i>
+                                Create At
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?foreach($pager->items as $item):?>
+                        <tr>
+                            <td class="center">
+                                <label>
+                                    <input type="checkbox" class="ace" value="<?=$item->id?>">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                            <td class="hidden-480"><?=$item->id?></td>
+                            <td>
+                                <a href="/admin/category/edit/<?=$item->id?>"><?=$item->categoryName?></a>
+                            </td>
+                            <td><?=$this->tag->datetime($item->createdAt)?></td>
+
+                            <td>
+                                <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                                    <a class="btn btn-xs btn-info" href="/admin/category/edit/<?=$item->id?>">
+                                        <i class="icon-edit bigger-120"></i>
+                                    </a>
+
+                                    <button class="btn btn-xs btn-danger ajax-form-sumbit" data-ajax-form="1" date-method="delete" data-form-action="/admin/category/delete/<?=$item->id?>" data-confirm="1" data-confirm-message="Category will be deleted, are you sure?" data-callback="form.closest('tr').hide();">
+                                        <i class="icon-trash bigger-120"></i>
+                                    </button>
+
+                                    <button class="btn btn-xs btn-warning">
+                                        <i class="icon-folder-open-alt bigger-120"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?endforeach?>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!--
+                        <span class="ui-pg-button ui-corner-all" title="" id="del_grid-table" data-original-title="Delete selected row"><div class="ui-pg-div"><span class="ui-icon icon-trash red"></span></div></span>
+                        -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate">
+                            <?$this->partial("partial/paginator", array(
+                                'pagerUrl' => '/admin/category',
+                                'pager' => $pager,
+                            ))?>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!--/table div-->
+
+        </div><!-- /col-->
+    </div><!--row end-->
+
+</div><!-- /.page-content -->

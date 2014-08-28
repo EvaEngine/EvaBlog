@@ -125,7 +125,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
      *
      * @var integer
      */
-    public $count = 0;
+    public $count = 1;
 
     /**
      *

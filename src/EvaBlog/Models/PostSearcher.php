@@ -40,7 +40,6 @@ class PostSearcher extends Post
         $searchParams['size'] = isset($query['limit']) && intval($query['limit']) > 0 ? intval($query['limit']) : 15;
         $page = isset($query['page']) && intval($query['page']) > 0 ? intval($query['page']) : 1;
         $searchParams['from'] = ($page - 1) * $searchParams['size'];
-
         $orderMapping = array(
             'id' => array(
                 'id' => array('order' => 'asc')
@@ -93,7 +92,6 @@ class PostSearcher extends Post
             $filters[]['term'] = array(
                 'status' => $query['status']
             );
-//            $itemQuery->andWhere('status = :status:', array('status' => $query['status']));
         }
 
         if (!empty($query['has_image'])) {
@@ -160,12 +158,13 @@ class PostSearcher extends Post
         if ($keyword) {
             $searchParams['body']['query']['multi_match'] = array(
                 'query' => $query['q'],
-                "fields" => array("title", "content"),
+                "fields" => array("content", "title"),
                 'type' => 'best_fields',
                 "tie_breaker" => 0.3
             );
             $searchParams['body']['min_score'] = 0.9;
         }
+
         $ret = $this->es_client->search($searchParams);
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
         return $pager;

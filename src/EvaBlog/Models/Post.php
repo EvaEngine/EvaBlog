@@ -93,8 +93,7 @@ class Post extends Entities\Posts
 
     public function beforeCreate()
     {
-        $user = new LoginModel();
-        if ($userinfo = $user->isUserLoggedIn()) {
+        if ($userinfo = LoginModel::getCurrentUser()) {
             $this->userId = $this->userId ? $this->userId : $userinfo['id'];
             $this->username = $this->username ? $this->username : $userinfo['username'];
         }
@@ -111,8 +110,7 @@ class Post extends Entities\Posts
 
     public function beforeUpdate()
     {
-        $user = new LoginModel();
-        if ($userinfo = $user->isUserLoggedIn()) {
+        if ($userinfo = LoginModel::getCurrentUser()) {
             $this->editorId = $userinfo['id'];
             $this->editorName = $userinfo['username'];
         }

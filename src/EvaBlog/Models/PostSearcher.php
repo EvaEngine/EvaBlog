@@ -12,6 +12,7 @@ namespace Eva\EvaBlog\Models;
 
 use Elasticsearch\Client;
 use Eva\EvaEngine\View\PurePaginator;
+use Phalcon\Http\Client\Exception;
 
 class PostSearcher extends Post
 {
@@ -194,15 +195,20 @@ class PostSearcher extends Post
         if ($filters) {
             $searchParams['body']['filter']['and']['filters'] = $filters;
         }
-
-        $ret = $this->es_client->search($searchParams);
+        try {
+            $ret = $this->es_client->search($searchParams);
+        } catch (\Exception $e) {
+            $ret = null;
+        }
         $posts = array();
-        foreach ($ret['hits']['hits'] as $hit) {
-            foreach ($hit['fields'] as $_k => $_v) {
+        if ($ret) {
+            foreach ($ret['hits']['hits'] as $hit) {
+                foreach ($hit['fields'] as $_k => $_v) {
 
-                $hit['fields'][$_k] = $_v[0];
+                    $hit['fields'][$_k] = $_v[0];
+                }
+                $posts[] = $hit['fields'];
             }
-            $posts[] = $hit['fields'];
         }
         return $posts;
     }

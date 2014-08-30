@@ -300,19 +300,40 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
     }
 
+    protected function replaceStaticFiles($contentHtml)
+    {
+        $thumbnail = $this->getDI()->getConfig()->thumbnail->default;
+        $staticUri = $thumbnail->baseUri;
+
+        if (!$thumbnail->enable || !$staticUri || false === strpos($contentHtml, '<img')) {
+            return $contentHtml;
+        }
+
+        $url = $this->getDI()->getUrl();
+        $contentHtml = preg_replace_callback(
+            '/src="(.+)"/',
+            function($matches) use ($staticUri) {
+                return 'src="' . $staticUri . $matches[1] . '"';
+            },
+            $contentHtml
+        );
+        return $contentHtml;
+    }
+
     public function getSummaryHtml()
     {
         if (!$this->summary) {
             return '';
         }
 
+        $html = '';
         if ($this->codeType == 'markdown') {
             $parsedown = new \Parsedown();
-
-            return $parsedown->text($this->summary);
+            $html = $parsedown->text($this->summary);
         } else {
-            return $this->summary;
+            $html = $this->summary;
         }
+        return $this->replaceStaticFiles($html);
     }
 
     public function getContentHtml()
@@ -320,13 +341,16 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         if (empty($this->text->content)) {
             return '';
         }
+
+        $html = '';
         if ($this->codeType == 'markdown') {
             $parsedown = new \Parsedown();
-
-            return $parsedown->text($this->text->content);
+            $html = $parsedown->text($this->text->content);
+        } else {
+            $html = $this->text->content;
         }
 
-        return $this->text->content;
+        return $this->replaceStaticFiles($html);
     }
 
     public function getUrl()

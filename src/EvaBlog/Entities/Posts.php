@@ -107,7 +107,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
      *
      * @var string
      */
-    public $commentStatus;
+    public $commentStatus = 'open';
 
     /**
      *

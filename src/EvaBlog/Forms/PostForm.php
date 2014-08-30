@@ -113,7 +113,9 @@ class PostForm extends Form
     public $editorName;
 
     /**
-     *
+     * @Type(Select)
+     * @Option(open=Open)
+     * @Option(closed=Closed)
      * @var string
      */
     public $commentStatus;

@@ -277,6 +277,30 @@
                                     </div><!--widgex box-->
 
                                     <div class="hr hr-double dotted"></div>
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-small">
+                                            <h5 class="lighter">Comment Status</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-down"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="control-group">
+                                                    <label class="block clearfix">
+                                                        <?=$form->render('commentStatus', array(
+                                                            'class' => 'form-control',
+                                                        ))?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--widgex box-->
+
+                                    <div class="hr hr-double dotted"></div>
                                     <div class="widget-box collapsed">
                                         <div class="widget-header widget-header-small">
                                             <h5 class="lighter">Publish Time</h5>

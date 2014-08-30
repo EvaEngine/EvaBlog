@@ -302,6 +302,17 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
     protected function replaceStaticFiles($contentHtml)
     {
+        $contentHtml = preg_replace_callback(
+            '/href="(.*)"/',
+            function($matches) {
+                if (strpos($matches[1], 'http://') === false) {
+                    return 'href="/' . $matches[1] . '"';
+                }
+                return $matches[0];
+            },
+            $contentHtml
+        );
+
         $thumbnail = $this->getDI()->getConfig()->thumbnail->default;
         $staticUri = $thumbnail->baseUri;
 

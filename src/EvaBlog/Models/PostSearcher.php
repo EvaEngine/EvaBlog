@@ -177,7 +177,14 @@ class PostSearcher extends Post
         $searchParams['type'] = 'article';
         $searchParams['size'] = $limit;
         $searchParams['from'] = 0;
-        $searchParams['timeout']='0.15s';
+        $searchParams['timeout'] = '0.15s';
+        $cacheKey = 'Blog_relPosts_' . $id . $limit . $days;
+        /** @var \Phalcon\Cache\Backend\Memcache $cache */
+        $cache = $this->getDI()->getGlobalCache();
+        $postsCached = $cache->get($cacheKey);
+        if ($postsCached != null) {
+            return unserialize($postsCached);
+        }
         $searchParams['fields'] = array(
             'id',
             'title',
@@ -211,6 +218,7 @@ class PostSearcher extends Post
                 $posts[] = $hit['fields'];
             }
         }
+        $cache->save($cacheKey, serialize($posts), 600);
         return $posts;
     }
 }

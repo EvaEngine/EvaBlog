@@ -177,6 +177,7 @@ class PostSearcher extends Post
         $searchParams['type'] = 'article';
         $searchParams['size'] = $limit;
         $searchParams['from'] = 0;
+        $searchParams['timeout']='0.15s';
         $searchParams['fields'] = array(
             'id',
             'title',

@@ -151,7 +151,7 @@
                             <td><?=$this->tag->datetime($item->createdAt)?></td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-xs btn-info" href="<?=$this->url->get($item->getUrl())?>" target="_blank">
+                                    <a class="btn btn-xs btn-info" href="<?=$this->config->blog->postDomain . $item->getUrl()?>" target="_blank">
                                         <i class="icon-link bigger-120"></i>
                                     </a>
 

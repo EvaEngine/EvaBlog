@@ -323,7 +323,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         $url = $this->getDI()->getUrl();
         $contentHtml = preg_replace_callback(
             '/src="(.+)"/',
-            function($matches) use ($staticUri) {
+            function ($matches) use ($staticUri) {
                 return 'src="' . $staticUri . $matches[1] . '"';
             },
             $contentHtml
@@ -377,13 +377,18 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
     }
 
+    public function getAbsoluteUrl()
+    {
+        return $this->getDI()->getConfig()->baseUri . $this->getUrl();
+    }
+
     /**
      * 通过 Post 数组来生成 URL
      *
      * @param $post
      * @return mixed
      */
-    public static  function getUrlByPostArr($post)
+    public static function getUrlByPostArr($post)
     {
         return preg_replace_callback(
             '/{{(.+?)}}/',

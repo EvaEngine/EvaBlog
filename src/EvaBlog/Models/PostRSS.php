@@ -86,7 +86,7 @@ XML;
         $baseUrl = $config->baseUri;
         $siteName = $config->siteName;
         foreach ($pager->items as $post) {
-            $description = htmlspecialchars($post->text->content);
+            $description = htmlspecialchars($post->getContentHtml());
             $pubdate = date(self::$timeFormat, $post->createdAt);
             $url = $baseUrl . $post->getUrl();
             $items .= <<<XML

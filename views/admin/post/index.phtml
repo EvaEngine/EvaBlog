@@ -153,6 +153,10 @@
                             <td><?=$this->tag->datetime($item->createdAt)?></td>
                             <td>
                                 <div class="btn-group">
+                                    <a class="btn btn-xs btn-info" href="http://<?=$this->config->domain . $item->getUrl()?>" target="_blank">
+                                        <i class="icon-link bigger-120"></i>
+                                    </a>
+
                                     <button class="btn btn-xs btn-success ajax-form-sumbit" data-ajax-form="1" date-method="put" data-form-action="/admin/post/process/status/<?=$item->id?>" data-callback="window.location.reload();">
                                         <input type="hidden" data-name="status" value="published" >
                                         <i class="icon-ok bigger-120"></i>
@@ -167,7 +171,7 @@
                                         <i class="icon-eye-close bigger-120"></i>
                                     </button>
 
-                                    <button class="btn btn-xs btn-danger ajax-form-sumbit" data-ajax-form="1" date-method="delete" data-form-action="/admin/post/process/delete/<?=$item->id?>" data-confirm="1" data-confirm-message="<?=sprintf('Item %s will be deleted, are you sure?', $item->title)?>" data-callback="form.closest('tr').hide();">
+                                    <button class="btn btn-xs btn-danger ajax-form-sumbit hide" data-ajax-form="1" date-method="delete" data-form-action="/admin/post/process/delete/<?=$item->id?>" data-confirm="1" data-confirm-message="<?=sprintf('Item %s will be deleted, are you sure?', $item->title)?>" data-callback="form.closest('tr').hide();">
                                         <i class="icon-trash bigger-120"></i>
                                     </button>
 

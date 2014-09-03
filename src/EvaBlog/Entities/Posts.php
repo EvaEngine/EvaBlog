@@ -302,17 +302,6 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
     protected function replaceStaticFiles($contentHtml)
     {
-        //$contentHtml = preg_replace_callback(
-        //    '/href="(.*)"/',
-        //    function($matches) {
-        //        if (strpos($matches[1], 'http://') === false) {
-        //            return 'href="/' . $matches[1] . '"';
-        //        }
-        //        return $matches[0];
-        //    },
-        //    $contentHtml
-        //);
-
         $thumbnail = $this->getDI()->getConfig()->thumbnail->default;
         $staticUri = $thumbnail->baseUri;
 
@@ -320,11 +309,18 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             return $contentHtml;
         }
 
-        $url = $this->getDI()->getUrl();
         $contentHtml = preg_replace_callback(
-            '/src="(.+)"/',
-            function ($matches) use ($staticUri) {
-                return 'src="' . $staticUri . $matches[1] . '"';
+            '/href="(\/.+(png|jpg|jpeg))?"/',
+            function($matches) use ($staticUri) {
+                return 'href="' . $staticUri . $matches[1] . '"';
+            },
+            $contentHtml
+        );
+
+        $contentHtml = preg_replace_callback(
+            '/src="(\/.+)\.(png|jpg|jpeg)"/',
+            function($matches) use ($staticUri) {
+                return 'src="' . $staticUri . $matches[1] . ',w_640.' . $matches[2] . '"';
             },
             $contentHtml
         );

@@ -173,11 +173,12 @@ class PostSearcher extends Post
 
     public function getRelatedPosts($id, $limit = 5, $days = 30)
     {
+        $timeout = '1s';
         $searchParams['index'] = $this->es_config['index_name'];
         $searchParams['type'] = 'article';
         $searchParams['size'] = $limit;
         $searchParams['from'] = 0;
-        $searchParams['timeout'] = '0.15s';
+        $searchParams['timeout'] = $timeout;
         $cacheKey = 'Blog_relPosts_' . $id . $limit . $days;
         /** @var \Phalcon\Cache\Backend\Memcache $cache */
         $cache = $this->getDI()->getGlobalCache();
@@ -191,7 +192,7 @@ class PostSearcher extends Post
             'createdAt',
             'slug'
         );
-
+        $searchParams['body']['timeout'] = $timeout;
         $searchParams['body']['query']['more_like_this'] = array(
             'fields' => array('title', 'content', 'tagNames'),
             'ids' => array($id)

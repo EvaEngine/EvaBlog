@@ -39,8 +39,8 @@
 <?
 $flashOutput = trim(strip_tags($this->tag->flashOutput()));
 if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
-    <script type="text/html" src="<?= $item->getAbsoluteUrl() ?>?_eva_refresh_dispatch_cache=1">
-    </script>
+    <iframe width="0" height="0"  src="<?= $item->getAbsoluteUrl() ?>?_eva_refresh_dispatch_cache=1">
+    </iframe>
 <? endif; ?>
 <? $textForm = $form->getForm('text') ?>
 <form id="" action="" method="POST" enctype="multipart/form-data" novalidate="novalidate">

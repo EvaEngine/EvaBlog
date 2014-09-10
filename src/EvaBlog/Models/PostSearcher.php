@@ -173,6 +173,9 @@ class PostSearcher extends Post
 
     public function getRelatedPosts($id, $limit = 5, $days = 30)
     {
+        if (!$this->getDI()->getConfig()->EvaSearch->relatedPostsEnable) {
+            return array();
+        }
         $timeout = '1s';
         $searchParams['index'] = $this->es_config['index_name'];
         $searchParams['type'] = 'article';

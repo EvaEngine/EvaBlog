@@ -219,7 +219,7 @@ class PostSearcher extends Post
                 $posts[] = $hit['fields'];
             }
         }
-        $cache->save($cacheKey, serialize($posts), 600);
+        $cache->save($cacheKey, serialize($posts), 3600);
         return $posts;
     }
 }

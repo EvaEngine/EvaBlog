@@ -45,6 +45,12 @@ class PostForm extends Form
 
     /**
      *
+     * @var string
+     */
+    public $type;
+
+    /**
+     *
      * @Type(Hidden)
      * @var string
      */

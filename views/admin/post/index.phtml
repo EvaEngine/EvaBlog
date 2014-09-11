@@ -51,6 +51,13 @@
                                     'class' => 'form-control input-sm'
                                 ))?>
                             </div>
+
+                            <div class="form-group">
+                                <?=$form->render('type', array(
+                                    'class' => 'form-control input-sm',
+                                    'placeholder' => 'Type',
+                                ))?>
+                            </div>
                             
                             <div class="form-group">
                                 <?=$form->render('uid', array())?>
@@ -68,6 +75,23 @@
                                     'class' => 'form-control input-sm',
                                     'placeholder' => 'Source',
                                 ))?>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="icon-time bigger-110"></i></div>
+                                    <?=$form->render('min_created_at', array(
+                                        'class' => 'form-control input-sm',
+                                        'size' => 10,
+                                        'placeholder' => 'from',
+                                    ))?>
+                                </div>
+                                <div class="input-group">
+                                    <?=$form->render('max_created_at', array(
+                                        'class' => 'form-control input-sm',
+                                        'size' => 10,
+                                        'placeholder' => 'to',
+                                    ))?>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <?=$form->render('cid', array(
@@ -108,7 +132,11 @@
                                 <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="sort_order" data-sortable-default="-sort_order">Order</a>
                             </th>
                             <th>User</th>
-                            <th>Count</th>
+                            <th>
+                                <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="count" data-sortable-default="-count">
+                                    Count
+                                </a>
+                            </th>
                             <th>
                                 <a href="<?=$this->tag->uri('/admin/post', $pager->query)?>" class="sortable-link" data-sortable-value="created_at" data-sortable-default="-created_at">
                                     <i class="icon-time bigger-110"></i>
@@ -124,17 +152,16 @@
                         <tr>
                             <td class="center">
                                 <label>
-                                    <input type="checkbox" class="ace" value="<?=$item->id?>"  data-batch-source="<?=$item->id?>">
+                                    <input type="checkbox" class="ace" value="<?=$item->id?>" data-batch-source="<?=$item->id?>">
                                     <span class="lbl"></span>
-
                                 </label>
                             </td>
                             <td class="hidden-480"><?=$item->id?></td>
                             <td>
                                 <a href="/admin/post/edit/<?=$item->id?>"><?=$item->title?></a>
                                 <?if($item->sourceName):?><a href="<?=$item->sourceUrl?>" target="_blank"><span class="label"><?=$item->sourceName?></span></a><?endif?>
-                                <a href="<?=$item->getAbsoluteUrl()?>" target="_blank"><span class="label"><?=$item->codeType?></span></a>
-
+                                    <span class="label"><?=$item->type?></span>
+                                    <span class="label"><?=$item->codeType?></span>
                             </td>
                             <td class="hidden-480">
                                 <?$status = array(
@@ -148,12 +175,12 @@
                             <td>
                                 <input class="form-control input-mini ajax-field-edit" value="<?=$item->sortOrder?>" data-name="sortOrder" date-method="put" data-form-action="/admin/post/process/sort/<?=$item->id?>" data-callback="input.parent().addClass('has-success')" />
                             </td>
-                            <td><?=$item->user ? $item->user->username : ''?></td>
+                            <td><a href="<?=$this->tag->uri('/admin/post', array('uid' => $item->user ? $item->user->id : null, 'username' =>  $item->user ? $item->user->username : null, 'page' => 1), $pager->query)?>"><?=$item->user ? ($item->user->screenName ? $item->user->screenName : $item->user->username) : ''?></a></td>
                             <td><?=$item->count?></td>
                             <td><?=$this->tag->datetime($item->createdAt)?></td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-xs btn-info" href="http://<?=$this->config->domain . $item->getUrl()?>" target="_blank">
+                                    <a class="btn btn-xs btn-info" href="<?=$item->getAbsoluteUrl()?>" target="_blank">
                                         <i class="icon-link bigger-120"></i>
                                     </a>
 

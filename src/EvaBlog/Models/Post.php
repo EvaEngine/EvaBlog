@@ -14,6 +14,7 @@ class Post extends Entities\Posts
     public static $simpleDump = array(
         'id',
         'title',
+        'type',
         'codeType',
         'createdAt',
         'summary',
@@ -36,6 +37,7 @@ class Post extends Entities\Posts
     public static $defaultDump = array(
         'id',
         'title',
+        'type',
         'codeType',
         'createdAt',
         'summary',
@@ -174,6 +176,14 @@ class Post extends Entities\Posts
             $itemQuery->inWhere('id', $idArray);
         }
 
+        if (!empty($query['type'])) {
+            $itemQuery->andWhere('type = :type:', array('type' => $query['type']));
+        }
+
+        if (!empty($query['flag'])) {
+            $itemQuery->andWhere('flag = :flag:', array('flag' => $query['flag']));
+        }
+
         if (!empty($query['status'])) {
             $itemQuery->andWhere('status = :status:', array('status' => $query['status']));
         }
@@ -186,8 +196,12 @@ class Post extends Entities\Posts
             $itemQuery->andWhere('createdAt > :minCreatedAt:', array('minCreatedAt' => $query['min_created_at']));
         }
 
-        if (!empty($query['sourceName'])) {
-            $itemQuery->andWhere('sourceName = :sourceName:', array('sourceName' => $query['sourceName']));
+        if (!empty($query['max_created_at'])) {
+            $itemQuery->andWhere('createdAt < :maxCreatedAt:', array('maxCreatedAt' => $query['max_created_at']));
+        }
+
+        if (!empty($query['source_name'])) {
+            $itemQuery->andWhere('sourceName = :sourceName:', array('sourceName' => $query['source_name']));
         }
 
         if (!empty($query['uid'])) {

@@ -32,6 +32,12 @@ class FilterForm extends Form
 
     /**
     *
+    * @var string
+    */
+    public $type = 'news';
+
+    /**
+    *
     * @Type(Select)
     * @Option("All Status")
     * @Option(deleted=Deleted)
@@ -53,6 +59,18 @@ class FilterForm extends Form
     * @var string
     */
     public $source_name;
+
+    /**
+    *
+    * @var string
+    */
+    public $min_created_at;
+
+    /**
+    *
+    * @var string
+    */
+    public $max_created_at;
 
     protected $cid;
 

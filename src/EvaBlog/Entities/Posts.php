@@ -42,6 +42,12 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
      *
      * @var string
      */
+    public $type = 'news';
+
+    /**
+     *
+     * @var string
+     */
     public $codeType = 'html';
 
     /**
@@ -382,7 +388,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
     public function getAbsoluteUrl()
     {
-        return $this->getDI()->getConfig()->baseUri . $this->getUrl();
+        return $this->getDI()->getConfig()->baseUri . $this->getUrlPath();
     }
 
     /**

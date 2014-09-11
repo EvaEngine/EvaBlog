@@ -14,6 +14,7 @@ class PostController extends \Phalcon\Mvc\Controller
         /** @noinspection PhpDuplicateArrayKeysInspection */
         $query = array(
             'q' => $this->dispatcher->getParam('q'),
+            'type' => $this->dispatcher->getParam('type'),
             'status' => $this->dispatcher->getParam('status'),
             'uid' => $this->dispatcher->getParam('uid'),
             'cid' => $this->dispatcher->getParam('cid'),

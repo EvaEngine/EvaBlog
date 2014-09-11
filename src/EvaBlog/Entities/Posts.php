@@ -4,6 +4,7 @@ namespace Eva\EvaBlog\Entities;
 
 use Eva\EvaBlog\Entities\Texts;
 use Eva\EvaEngine\IoC;
+use Phalcon\Text;
 
 class Posts extends \Eva\EvaEngine\Mvc\Model
 {
@@ -360,9 +361,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         return $this->replaceStaticFiles($html);
     }
 
-    public function getUrl()
+    public function getUrlPath()
     {
-        $url = $this->getDI()->getUrl();
         $self = $this;
         return preg_replace_callback(
             '/{{(.+?)}}/',
@@ -371,6 +371,13 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             },
             $this->getDI()->getConfig()->blog->postPath
         );
+    }
+
+    public function getUrl()
+    {
+        $url = $this->getDI()->getUrl();
+        $self = $this;
+        return $url->get($this->getUrlPath());
     }
 
     public function getAbsoluteUrl()
@@ -398,22 +405,10 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
     public function getImageUrl()
     {
         if (!$this->image) {
-            return '';
+            return null;
         }
 
-        return $this->image;
-        /*
-        if ($this->image) {
-            if(
-                \Phalcon\Text::startsWith($this->image, 'http://', false) ||
-                \Phalcon\Text::startsWith($this->image, 'https://', false)
-            ) {
-                return $this->image;
-            }
-        }
-        $staticUri = $this->getDI()->getConfig()->filesystem->staticUri;
-        $staticPath = $this->getDI()->getConfig()->filesystem->staticPath;
-        return $staticUri . $staticPath . $this->image;
-        */
+        $tag = $this->getDI()->getTag();
+        return $tag::thumb($this->image);
     }
 }

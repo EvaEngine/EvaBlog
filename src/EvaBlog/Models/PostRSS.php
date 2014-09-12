@@ -39,7 +39,7 @@ class PostRSS
         foreach ($pager->items as $post) {
             $description = htmlspecialchars($post->summary);
             $pubdate = date(self::$timeFormat, $post->createdAt);
-            $url = $baseUrl . $post->getUrl();
+            $url = $post->getAbsoluteUrl();
             $items .= <<<XML
 \n<item>
     <title>{$post->title}</title>
@@ -89,7 +89,7 @@ XML;
         foreach ($pager->items as $post) {
             $description = htmlspecialchars($post->getContentHtml());
             $pubdate = date(self::$timeFormat, $post->createdAt);
-            $url = $baseUrl . $post->getUrl();
+            $url = $post->getAbsoluteUrl();
             $items .= <<<XML
 \n<item>
     <title>{$post->title}</title>

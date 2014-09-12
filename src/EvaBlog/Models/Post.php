@@ -177,7 +177,12 @@ class Post extends Entities\Posts
         }
 
         if (!empty($query['type'])) {
-            $itemQuery->andWhere('type = :type:', array('type' => $query['type']));
+            $typeArray = explode(',', $query['type']);
+            if ($typeArray > 1) {
+                $itemQuery->inWhere('type', $typeArray);
+            } else {
+                $itemQuery->andWhere('type = :type:', array('type' => $query['type']));
+            }
         }
 
         if (!empty($query['flag'])) {

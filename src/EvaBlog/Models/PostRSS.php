@@ -21,8 +21,9 @@ class PostRSS
         $post = new Post();
         $posts = $post->findPosts(
             array(
+                'type' => 'news',
                 'order' => '-created_at',
-                'status' => 'published'
+                'status' => 'published',
             )
         );
         $items = '';

@@ -2,6 +2,13 @@
 
 namespace Eva\EvaBlog\Entities;
 
+/**
+ * @package
+ * @category
+ * @subpackage
+ *
+ * @SWG\Model(id="PostStar")
+ */
 class Stars extends \Eva\EvaEngine\Mvc\Model
 {
 
@@ -12,19 +19,26 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
     public $id;
 
     /**
-     *
      * @var integer
      */
     public $userId;
 
     /**
-     *
+     * @SWG\Property(
+     *   name="postId",
+     *   type="integer",
+     *   description="Post ID"
+     * )
      * @var integer
      */
     public $postId;
 
     /**
-     *
+     * @SWG\Property(
+     *   name="createdAt",
+     *   type="integer",
+     *   description="Stared time"
+     * )
      * @var integer
      */
     public $createdAt = 0;

@@ -40,4 +40,40 @@ class Star extends Entities\Stars
         $itemQuery->orderBy($order);
         return $itemQuery;
     }
+
+    public function importStars(array $stars, $userId)
+    {
+        $count = 0;
+        foreach($stars as $star) {
+            if (empty($star['postId']) || empty($star['createdAt'])) {
+                throw new Exception\InvalidArgumentException('Star format incorrect');
+            }
+            $count++;
+        }
+
+        if ($count > 100) {
+            throw new Exception\OutOfRangeException('Import too many stars');
+        }
+
+        $starEntities = array();
+        foreach($stars as $starArray) {
+            $postId = $starArray['postId'];
+            if (!$post = Entities\Posts::findFirst("id = $postId")) {
+                continue;
+            }
+            if ($star = Entities\Stars::findFirst("postId = $postId AND userId = $userId")) {
+                $starEntities[] = $star;
+                continue;
+            }
+            $star = new Entities\Stars();
+            $star->userId = $userId;
+            $star->postId = $postId;
+            $star->createdAt = $starArray['createdAt'];
+            if (!$star->save()) {
+                throw new Exception\RuntimeException('Create post star failed');
+            }
+            $starEntities[] = $star;
+        }
+        return $starEntities;
+    }
 }

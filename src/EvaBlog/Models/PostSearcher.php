@@ -138,7 +138,11 @@ class PostSearcher extends Post
         );
         $searchParams['body']['sort'] = $sort;
         if ($filters) {
-            $searchParams['body']['filter']['and']['filters'] = $filters;
+            $searchParams['body']['filter']['and'] = array(
+                'filters' => $filters,
+                "_cache" => true
+
+            );
         }
         if (isset($query['highlight']) && $query['highlight']) {
             $searchParams['body']['highlight'] = array(
@@ -205,7 +209,11 @@ class PostSearcher extends Post
             'createdAt' => array('from' => time() - (86400 * $days))
         );
         if ($filters) {
-            $searchParams['body']['filter']['and']['filters'] = $filters;
+            $searchParams['body']['filter']['and'] = array(
+                'filters' => $filters,
+                "_cache" => true
+
+            );
         }
         try {
             $ret = $this->es_client->search($searchParams);
@@ -222,7 +230,7 @@ class PostSearcher extends Post
                 $posts[] = $hit['fields'];
             }
         }
-        $cache->save($cacheKey, serialize($posts), 3600);
+        $cache->save($cacheKey, serialize($posts), 600);
         return $posts;
     }
 }

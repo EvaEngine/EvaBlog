@@ -388,7 +388,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
     public function getAbsoluteUrl()
     {
-        return $this->getDI()->getConfig()->baseUri . $this->getUrlPath();
+        return $this->getDI()->getConfig()->blog->postDomain . $this->getUrlPath();
     }
 
     /**

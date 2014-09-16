@@ -14,11 +14,27 @@ use Eva\EvaEngine\IoC;
 
 class PostRSS
 {
-    private static $timeFormat = 'D, j M Y G:i:s P';
+    private $timeFormat = 'D, j M Y G:i:s P';
+    private $urlMaker = null;
 
-    public static function getFeedOutput($limit = 30)
+    public function __construct($urlMaker = null, $timeFormat = 'D, j M Y G:i:s P')
+    {
+        if (!is_callable($urlMaker)) {
+            $urlMaker = array($this, 'defaultUrlMaker');
+        }
+        $this->urlMaker = $urlMaker;
+        $this->timeFormat = $timeFormat;
+    }
+
+    public function defaultUrlMaker($post)
+    {
+        return $post->getAbsoluteUrl();
+    }
+
+    public function getFeedOutput($limit = 30)
     {
         $post = new Post();
+
         $posts = $post->findPosts(
             array(
                 'type' => 'news',
@@ -37,14 +53,14 @@ class PostRSS
         $baseUrl = $config->baseUri;
         $siteName = $config->siteName;
         foreach ($pager->items as $post) {
-            $description = htmlspecialchars($post->summary);
-            $pubdate = date(self::$timeFormat, $post->createdAt);
-            $url = $post->getAbsoluteUrl();
+            $description = $post->summary;
+            $pubdate = date($this->timeFormat, $post->createdAt);
+            $url = call_user_func($this->urlMaker, $post);
             $items .= <<<XML
 \n<item>
-    <title>{$post->title}</title>
+    <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description>{$description}</description>
+    <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>{$post->username}</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>
@@ -56,9 +72,9 @@ XML;
         $feed = <<<XML
 <?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xml:base="{$baseUrl}/feed" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>{$siteName}</title>
+        <title><![CDATA[ {$siteName} ]]></title>
         <link>{$baseUrl}/feed</link>
-        <description>这个RSS的订阅是显示文章摘要的</description>
+        <description><![CDATA[ 这个RSS的订阅是显示文章摘要的 ]]></description>
         <language>zh-hans</language>
         {$items}
     </channel>
@@ -67,9 +83,10 @@ XML;
         return $feed;
     }
 
-    public static function getRssDotXmlOutput($limit = 75)
+    public function getRssDotXmlOutput($limit = 75)
     {
         $post = new Post();
+
         $posts = $post->findPosts(
             array(
                 'order' => '-created_at',
@@ -87,14 +104,14 @@ XML;
         $baseUrl = $config->baseUri;
         $siteName = $config->siteName;
         foreach ($pager->items as $post) {
-            $description = htmlspecialchars($post->getContentHtml());
-            $pubdate = date(self::$timeFormat, $post->createdAt);
-            $url = $post->getAbsoluteUrl();
+            $description = $post->getContentHtml();
+            $pubdate = date($this->timeFormat, $post->createdAt);
+            $url = call_user_func($this->urlMaker, $post);
             $items .= <<<XML
 \n<item>
     <title>{$post->title}</title>
     <link>{$url}</link>
-    <description>{$description}</description>
+    <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>Shox</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>
@@ -108,7 +125,7 @@ XML;
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xml:base="{$baseUrl}"  xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
- <title>{$siteName}</title>
+ <title><![CDATA[ {$siteName} ]]></title>
  <link>{$baseUrl}</link>
  <description></description>
  <language>zh-hans</language>

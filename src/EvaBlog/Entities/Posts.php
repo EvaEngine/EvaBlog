@@ -325,7 +325,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
 
         $contentHtml = preg_replace_callback(
-            '/src="(\/.+)\.(png|jpg|jpeg)"/',
+            '/src="(\/.+)\.(png|jpg|jpeg|gif)"/',
             function($matches) use ($staticUri) {
                 return 'src="' . $staticUri . $matches[1] . ',w_640.' . $matches[2] . '"';
             },

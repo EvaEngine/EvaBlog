@@ -31,6 +31,7 @@ class Post extends Entities\Posts
         'user' => array(
             'id',
             'username',
+            'screenName',
         ),
     );
 

@@ -22,6 +22,7 @@ class Post extends Entities\Posts
         'commentStatus',
         'sourceName',
         'sourceUrl',
+        'count',
         'url' => 'getUrl',
         'imageUrl' => 'getImageUrl',
         'tags' => array(
@@ -46,6 +47,7 @@ class Post extends Entities\Posts
         'commentStatus',
         'sourceName',
         'sourceUrl',
+        'count',
         'url' => 'getUrl',
         'imageUrl' => 'getImageUrl',
         'content' => 'getContentHtml',

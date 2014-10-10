@@ -1,11 +1,4 @@
 <div class="breadcrumbs" id="breadcrumbs">
-    <script type="text/javascript">
-        try {
-            ace.settings.check('breadcrumbs', 'fixed')
-        } catch (e) {
-        }
-    </script>
-
     <ul class="breadcrumb">
         <li>
             <i class="icon-home home-icon"></i>
@@ -611,6 +604,13 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 </form>
 
 <script>
+(function(root, factory){
+    if (typeof define === 'function' && define.amd) {
+        require(["moment", "jquery"], factory);
+    } else {
+        factory(root.moment, root.jQuery);
+    }
+})(this, function(moment, $){
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");
         connectionUI.on('click', '[data-role="submiter"]', function () {
@@ -647,4 +647,5 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         }
         $('input[name=day], input[name=time]').on('change', updateCreateTime);
     });
+});
 </script>

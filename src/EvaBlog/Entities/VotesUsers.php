@@ -30,4 +30,9 @@ class VotesUsers extends \Eva\EvaEngine\Mvc\Model
     public $createdAt;
 
     protected $tableName = 'blog_votes_users';
+
+    public function onConstruct()
+    {
+        $this->createdAt = time();
+    }
 }

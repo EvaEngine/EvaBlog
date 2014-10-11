@@ -183,6 +183,15 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             )
         );
 
+        $this->hasOne(
+            'id',
+            'Eva\EvaBlog\Entities\Votes',
+            'postId',
+            array(
+                'alias' => 'vote'
+            )
+        );
+
         $this->belongsTo(
             'userId',
             'Eva\EvaUser\Entities\Users',

@@ -1,9 +1,12 @@
 <?php
-
 namespace Eva\EvaBlog\Entities;
 
 class Votes extends \Eva\EvaEngine\Mvc\Model
 {
+
+    const TYPE_UP = 'upVote';
+
+    const TYPE_DOWN = 'downVote';
 
     /**
      *
@@ -30,4 +33,11 @@ class Votes extends \Eva\EvaEngine\Mvc\Model
     public $lastVotedAt;
 
     protected $tableName = 'blog_votes';
+
+    public function onConstruct()
+    {
+        $this->upVote = 0;
+        $this->downVote = 0;
+    }
+
 }

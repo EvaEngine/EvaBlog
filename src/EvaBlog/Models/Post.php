@@ -166,7 +166,7 @@ class Post extends Entities\Posts
             'count' => 'count ASC',
             '-count' => 'count DESC',
         );
-        if ($query['alias']) {
+        if (!empty($query['alias'])) {
             $methodName = 'alias' . ucfirst($query['alias']);
             if (method_exists($this, $methodName)) {
                 $alias_query = $this->$methodName();

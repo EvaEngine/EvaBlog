@@ -187,7 +187,7 @@ class PostSearcher extends Post
         $searchParams['from'] = 0;
         $searchParams['timeout'] = $timeout;
         $cacheKey = 'Blog_relPosts_' . $id . $limit . $days;
-        /** @var \Phalcon\Cache\Backend\Memcache $cache */
+        /** @var \Phalcon\Cache\Backend $cache */
         $cache = $this->getDI()->getGlobalCache();
         $postsCached = $cache->get($cacheKey);
         if ($postsCached != null) {
@@ -208,6 +208,9 @@ class PostSearcher extends Post
         $filters[]['range'] = array(
             'createdAt' => array('from' => time() - (86400 * $days))
         );
+        $filters[]['term'] = array(
+            'status' => 'published'
+        );
         if ($filters) {
             $searchParams['body']['filter']['and'] = array(
                 'filters' => $filters,
@@ -224,9 +227,9 @@ class PostSearcher extends Post
         if ($ret) {
             foreach ($ret['hits']['hits'] as $hit) {
                 foreach ($hit['fields'] as $_k => $_v) {
-
                     $hit['fields'][$_k] = $_v[0];
                 }
+
                 $posts[] = $hit['fields'];
             }
         }

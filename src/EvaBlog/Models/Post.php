@@ -109,6 +109,7 @@ class Post extends Entities\Posts
     {
         $this->getDI()->getEventsManager()->fire('blog:afterCreate', $this);
     }
+
     public function afterSave()
     {
         $this->getDI()->getEventsManager()->fire('blog:afterSave', $this);
@@ -165,7 +166,12 @@ class Post extends Entities\Posts
             'count' => 'count ASC',
             '-count' => 'count DESC',
         );
-
+        if ($query['alias']) {
+            $methodName = 'alias' . ucfirst($query['alias']);
+            if (method_exists($this, $methodName)) {
+                $query = array_merge($this->$methodName, $query);
+            }
+        }
         if (!empty($query['columns'])) {
             $itemQuery->columns($query['columns']);
         }
@@ -249,6 +255,18 @@ class Post extends Entities\Posts
         return $itemQuery;
     }
 
+    /**
+     * 热门新闻
+     *
+     * @return array
+     */
+    public function aliasHotNews()
+    {
+        return array(
+            'min_created_at' => strtotime('-2 days'),
+            'order' => '-created_at'
+        );
+    }
 
     public function createPost(array $data)
     {

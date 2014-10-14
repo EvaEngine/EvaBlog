@@ -269,7 +269,7 @@ class Post extends Entities\Posts
     {
         return array(
             'min_created_at' => strtotime('-2 days'),
-            'order' => '-created_at'
+            'order' => '-count'
         );
     }
 

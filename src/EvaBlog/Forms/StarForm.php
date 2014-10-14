@@ -8,14 +8,14 @@ use Eva\EvaEngine\Form;
  * @category
  * @subpackage
  *
- * @SWG\Model(id="StarForm")
+ * @SWG\Model(id="PostStarForm")
  */
 class StarForm extends Form
 {
     /**
     * @var array<Stars>
      *
-     * @SWG\Property(name="stars",type="array", items="$ref:PostStar")
+     * @SWG\Property(name="stars",type="array", items="$ref:StarPost")
      */
     public $stars;
 

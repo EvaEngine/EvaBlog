@@ -165,7 +165,7 @@ class PostSearcher extends Post
                 'query' => $query['q'],
                 "fields" => array("content", "title"),
                 'type' => 'phrase',
-                "tie_breaker" => 0.3
+                "tie_breaker" => 1.0
             );
             $searchParams['body']['min_score'] = 0.9;
         }

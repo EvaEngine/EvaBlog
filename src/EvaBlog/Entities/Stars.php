@@ -7,7 +7,7 @@ namespace Eva\EvaBlog\Entities;
  * @category
  * @subpackage
  *
- * @SWG\Model(id="PostStar")
+ * @SWG\Model(id="StarPost")
  */
 class Stars extends \Eva\EvaEngine\Mvc\Model
 {

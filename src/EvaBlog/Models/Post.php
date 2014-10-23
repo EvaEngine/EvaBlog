@@ -14,6 +14,7 @@ class Post extends Entities\Posts
     public static $simpleDump = array(
         'id',
         'title',
+        'slug',
         'type',
         'codeType',
         'createdAt',
@@ -39,6 +40,7 @@ class Post extends Entities\Posts
     public static $defaultDump = array(
         'id',
         'title',
+        'slug',
         'type',
         'codeType',
         'createdAt',

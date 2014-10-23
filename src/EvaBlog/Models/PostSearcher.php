@@ -129,7 +129,7 @@ class PostSearcher extends Post
             $sort = array_merge($sort, $orderMapping[$query['order']]);
         }
         $sort = array_merge(
-            $sort,
+//            $sort,
             array(
                 '_score' => array(
                     'order' => 'desc'
@@ -161,15 +161,38 @@ class PostSearcher extends Post
         }
         $keyword = isset($query['q']) && count(trim($query['q'])) > 0 ? trim($query['q']) : false;
         if ($keyword) {
-            $searchParams['body']['query']['multi_match'] = array(
-                'query' => $query['q'],
-                "fields" => array("content", "title"),
-                'type' => 'phrase',
-                "tie_breaker" => 1.0
+//            $searchParams['body']['query']['multi_match'] = array(
+//                'query' => $query['q'],
+//                "fields" => array("content", "title"),
+//                'type' => 'phrase',
+//                "tie_breaker" => 1.0
+//            );
+//            $searchParams['body']['min_score'] = 0.9;
+            $gravity = 5;
+            $now = time();
+            $searchParams['body']['query'] = array(
+                'function_score' => array(
+                    'functions' => array(
+                        array(
+                            'script_score' => array(
+                                "script" => "(_score - 1) / pow(({$now} - doc['createdAt'].value), {$gravity})"
+                            )
+                        )
+                    ),
+                    'query' => array(
+                        'multi_match' => array(
+                            'query' => $query['q'],
+                            "fields" => array("content", "title"),
+                            'type' => 'best_fields',
+//                            "tie_breaker" => 0.3
+                        )
+                    )
+                )
             );
-            $searchParams['body']['min_score'] = 0.9;
         }
-
+//        header('Content-Type: text/javascript;');
+//        echo(json_encode($searchParams, JSON_UNESCAPED_UNICODE));
+//        exit();
         $ret = $this->es_client->search($searchParams);
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
         return $pager;

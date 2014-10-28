@@ -109,7 +109,7 @@ XML;
             $url = call_user_func($this->urlMaker, $post);
             $items .= <<<XML
 \n<item>
-    <title>{$post->title}</title>
+    <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
     <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>

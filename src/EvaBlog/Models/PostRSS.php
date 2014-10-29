@@ -105,11 +105,12 @@ XML;
         $siteName = $config->siteName;
         foreach ($pager->items as $post) {
             $description = $post->getContentHtml();
+            $description .= '<p>（更多精彩财经资讯，<a href="http://activity.wallstreetcn.com/app/index.html">点击这里下载华尔街见闻App</a>)</p>';
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
             $items .= <<<XML
 \n<item>
-    <title>{$post->title}</title>
+    <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
     <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>

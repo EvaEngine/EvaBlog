@@ -46,10 +46,24 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
 
     protected $tableName = 'blog_stars';
 
+    public function afterSave()
+    {
+        $this->user->refreshCache();
+    }
+
+    public function afterDelete()
+    {
+        $this->user->refreshCache();
+    }
+
     public function initialize()
     {
         $this->hasOne('postId', 'Eva\EvaBlog\Entities\Posts', 'id', array(
             'alias' => 'post'
+        ));
+
+        $this->hasOne('userId', 'Eva\EvaUser\Entities\Users', 'id', array(
+            'alias' => 'user'
         ));
     }
 }

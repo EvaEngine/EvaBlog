@@ -27,14 +27,5 @@ return array(
         'action' => 1,
         'id' => 3,
     ),
-    '/admin/topic' => array(
-        'module' => 'EvaBlog',
-        'controller' => 'Admin\Topic',
-    ),
-    '/admin/topic/:action(/(\d+))*' => array(
-        'module' => 'EvaBlog',
-        'controller' => 'Admin\Topic',
-        'action' => 1,
-        'id' => 3,
-    ),
+
 );

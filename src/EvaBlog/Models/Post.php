@@ -24,6 +24,7 @@ class Post extends Entities\Posts
         'sourceName',
         'sourceUrl',
         'count',
+        'commentCount',
         'url' => 'getUrl',
         'imageUrl' => 'getImageUrl',
         'tags' => array(

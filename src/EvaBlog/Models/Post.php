@@ -174,11 +174,6 @@ class Post extends Entities\Posts
             if (method_exists($this, $methodName)) {
                 $alias_query = $this->$methodName();
                 $query = array_merge($query, $alias_query);
-                // 普通查询条件可以覆盖 alias 的查询条件
-//                foreach ($query as $_k => $_q) {
-//                    $alias_q = isset($alias_query[$_k]) ? $alias_query[$_k] : null;
-//                    $query[$_k] = $_q == null ? $alias_q : $_q;
-//                }
             }
         }
         if (!empty($query['columns'])) {

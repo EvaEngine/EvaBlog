@@ -153,6 +153,10 @@ class Post extends Entities\Posts
         }
     }
 
+    /**
+     * @param array $query
+     * @return \Phalcon\Mvc\Model\Query\BuilderInterface
+     */
     public function findPosts(array $query = array())
     {
         $itemQuery = $this->getDI()->getModelsManager()->createBuilder();

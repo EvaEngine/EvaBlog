@@ -195,7 +195,7 @@ class Post extends Entities\Posts
 
         if (!empty($query['type'])) {
             $typeArray = explode(',', $query['type']);
-            if ($typeArray > 1) {
+            if (count($typeArray) > 1) {
                 $itemQuery->inWhere('type', $typeArray);
             } else {
                 $itemQuery->andWhere('type = :type:', array('type' => $query['type']));
@@ -231,13 +231,13 @@ class Post extends Entities\Posts
         }
 
         if (!empty($query['cid'])) {
-            $itemQuery->join('Eva\EvaBlog\Entities\CategoriesPosts', 'id = r.postId', 'r')
-                ->andWhere('r.categoryId = :cid:', array('cid' => $query['cid']));
+            $itemQuery->join('Eva\EvaBlog\Entities\CategoriesPosts', 'id = _cate.postId', '_cate')
+                ->andWhere('_cate.categoryId = :cid:', array('cid' => $query['cid']));
         }
 
         if (!empty($query['tid'])) {
-            $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = r.postId', 'r')
-                ->andWhere('r.tagId = :tid:', array('tid' => $query['tid']));
+            $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
+                ->andWhere('_tag.tagId = :tid:', array('tid' => $query['tid']));
         }
 
         $order = 'createdAt DESC';

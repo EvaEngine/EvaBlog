@@ -236,8 +236,15 @@ class Post extends Entities\Posts
         }
 
         if (!empty($query['tid'])) {
-            $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
-                ->andWhere('_tag.tagId = :tid:', array('tid' => $query['tid']));
+            $tidArray = explode(',', $query['tid']);
+            if (count($tidArray) > 1) {
+                $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
+                    ->inWhere('_tag.tagId', $tidArray);
+            } else {
+                $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
+                    ->andWhere('_tag.tagId = :tid:', array('tid' => $query['tid']));
+            }
+
         }
 
         $order = 'createdAt DESC';

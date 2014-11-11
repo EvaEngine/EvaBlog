@@ -31,13 +31,39 @@ class Star extends Entities\Stars
         )
     );
 
-    public function getStars($userId)
+    public function getStars($params)
     {
-        $itemQuery = $this->getDI()->getModelsManager()->createBuilder();
+        $cacheKey = $this->createCacheKey($params);
+
+//        dd($cacheKey);
+        if($this->getCache()->exists($cacheKey)){
+            return $this->getCache()->get($cacheKey);
+        }
+
+        $results = $this->getStarsBuilder($params)->getQuery()->execute();
+
+        if(!count($results)){
+            $results = array();
+        }
+
+        $this->getCache()->save($cacheKey,$results,$this->cacheTime);
+        return $results;
+    }
+
+    public function getStarsBuilder($params)
+    {
+        $itemQuery = $this->getModelsManager()->createBuilder();
         $itemQuery->from(__CLASS__);
-        $itemQuery->andWhere('userId = :userId:', array('userId' => $userId));
+        if($params['userId']){
+            $itemQuery->andWhere('userId = :userId:', array('userId' => $params['userId']));
+        }
+
+        if($params['postId']){
+            $itemQuery->andWhere('postId = :postId:', array('postId' => $params['postId']));
+        }
         $order = 'createdAt DESC';
         $itemQuery->orderBy($order);
+
         return $itemQuery;
     }
 

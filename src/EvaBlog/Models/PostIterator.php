@@ -27,16 +27,16 @@ use Phalcon\Db;
  */
 class PostIterator implements \Iterator
 {
-    private $position = 0;
-    private $total_items = 0;
-    private $perSize = 100;
-    private $endPosition = 0;
-    private $postsTableName;
-    private $textsTableName;
-    private $votesTableName;
-    private $tagsTableName;
-    private $categoriesTableName;
-    private $sql;
+    protected $position = 0;
+    protected $total_items = 0;
+    protected $perSize = 100;
+    protected $endPosition = 0;
+    protected $postsTableName;
+    protected $textsTableName;
+    protected $votesTableName;
+    protected $tagsTableName;
+    protected $categoriesTableName;
+    protected $sql;
     /**
      * @var \Phalcon\Db\AdapterInterface
      */
@@ -68,7 +68,7 @@ class PostIterator implements \Iterator
         $this->tagsTableName = with(new Tags())->getSource();
 
         $this->categoriesTableName = with(new CategoriesPosts())->getSource();
-        $this->endPosition = floor($this->total_items / $this->perSize);
+        $this->endPosition = ceil($this->total_items / $this->perSize);
         if ($withRelations) {
             $this->sql = <<<SQL
 SELECT

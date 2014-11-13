@@ -80,14 +80,14 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
     public function afterSave()
     {
         $this->refreshCache(array('userId'=>$this->userId));
-        $this->refreshCache(array('postId'=>$this->userId));
+        $this->refreshCache(array('postId'=>$this->postId));
         $this->refreshCache(array('userId'=>$this->userId,'postId'=>$this->postId));
     }
 
     public function afterDelete()
     {
         $this->refreshCache(array('userId'=>$this->userId));
-        $this->refreshCache(array('postId'=>$this->userId));
+        $this->refreshCache(array('postId'=>$this->postId));
         $this->refreshCache(array('userId'=>$this->userId,'postId'=>$this->postId));
     }
 

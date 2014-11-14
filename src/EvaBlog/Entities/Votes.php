@@ -34,6 +34,13 @@ class Votes extends \Eva\EvaEngine\Mvc\Model
 
     protected $tableName = 'blog_votes';
 
+    public static $defaultDump = array(
+        'postId',
+        'upVote',
+        'downVote',
+        'lastVotedAt',
+    );
+
     public function onConstruct()
     {
         $this->upVote = 0;

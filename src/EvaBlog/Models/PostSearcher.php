@@ -200,18 +200,15 @@ class PostSearcher extends Post
         $ret = $this->es_client->search($searchParams);
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
 
-////      如果关键词不存在，写入mysql
-//        if(!KeywordCount::exists($keyword)){
-//            KeywordCount::increase($keyword);
-//        }
+        if($query['increase'] !== false) {
+            //使用redis进行关键词统计
+            $countrRankUtil = new CounterRankUtil();
+            $countrRank = $countrRankUtil->getCounterRank("keywords");
 
-        //使用redis进行关键词统计
-        $countrRankUtil = new CounterRankUtil();
-        $countrRank = $countrRankUtil->getCounterRank("keywords");
-
-        //被搜索的关键词加1,如果不存在,则新创建
-        if(!$countrRank->increase($keyword, 1)) {
-            $countrRank->create($keyword, 1);
+            //被搜索的关键词加1,如果不存在,则新创建
+            if(!$countrRank->increase($keyword, 1)) {
+                $countrRank->create($keyword, 1);
+            }
         }
 
         return $pager;

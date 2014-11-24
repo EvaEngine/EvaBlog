@@ -11,8 +11,11 @@ namespace Eva\EvaBlog\Models;
 // +----------------------------------------------------------------------
 
 use Elasticsearch\Client;
+use Eva\CounterRank\Utils\CounterRankUtil;
 use Eva\EvaCache\CacheManager;
 use Eva\EvaEngine\View\PurePaginator;
+use Eva\EvaSearch\Entities\KeywordCounts;
+use Eva\EvaSearch\Models\KeywordCount;
 use Phalcon\Http\Client\Exception;
 
 class PostSearcher extends Post
@@ -196,6 +199,18 @@ class PostSearcher extends Post
 //        exit();
         $ret = $this->es_client->search($searchParams);
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
+
+        if($query['increase'] !== false) {
+            //使用redis进行关键词统计
+            $countrRankUtil = new CounterRankUtil();
+            $countrRank = $countrRankUtil->getCounterRank("keywords");
+
+            //被搜索的关键词加1,如果不存在,则新创建
+            if(!$countrRank->increase($keyword, 1)) {
+                $countrRank->create($keyword, 1);
+            }
+        }
+
         return $pager;
     }
 

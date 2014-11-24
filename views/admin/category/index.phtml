@@ -66,6 +66,7 @@
                             </th>
                             <th class="hidden-480">ID</th>
                             <th>Name</th>
+                            <th>Order</th>
                             <th>
                                 <i class="icon-time bigger-110 hidden-480"></i>
                                 Create At
@@ -87,6 +88,7 @@
                             <td>
                                 <a href="/admin/category/edit/<?=$item->id?>"><?=$item->categoryName?></a>
                             </td>
+                            <td><input class="form-control input-mini ajax-field-edit" value="<?=$item->sortOrder?>" data-name="sortOrder" date-method="put" data-form-action="/admin/category/process/sort/<?=$item->id?>" data-callback="input.parent().addClass('has-success')" /></td>
                             <td><?=$this->tag->datetime($item->createdAt)?></td>
 
                             <td>

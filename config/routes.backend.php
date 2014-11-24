@@ -11,6 +11,13 @@ return array(
         'action' => 1,
         'id' => 3,
     ),
+    '/admin/category/process/:action(/(\d+))*' => array(
+        'module' => 'EvaBlog',
+        'controller' => 'Admin\CategoryProcess',
+        'action' => 1,
+        'id' => 3,
+    ),
+
     '/admin/post' => array(
         'module' => 'EvaBlog',
         'controller' => 'Admin\Post',

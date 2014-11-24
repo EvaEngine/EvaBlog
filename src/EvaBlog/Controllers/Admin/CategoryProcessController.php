@@ -19,6 +19,10 @@ use Eva\EvaEngine\Mvc\Controller\JsonControllerInterface;
 use Eva\EvaEngine\Exception;
 
 
+/**
+ * @resourceName("Category Managment Assists")
+ * @resourceDescription("Category Managment Assists (Ajax json format)")
+ */
 class CategoryProcessController extends ControllerBase implements JsonControllerInterface {
 
     /**

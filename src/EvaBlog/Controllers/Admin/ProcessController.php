@@ -7,9 +7,9 @@ use Eva\EvaEngine\Mvc\Controller\JsonControllerInterface;
 use Eva\EvaEngine\Exception;
 
 /**
-* @resourceName("Post Managment Assists")
-* @resourceDescription("Post Managment Assists (Ajax json format)")
-*/
+ * @resourceName("Category Managment Assists")
+ * @resourceDescription("Category Managment Assists (Ajax json format)")
+ */
 class ProcessController extends ControllerBase implements JsonControllerInterface
 {
     /**

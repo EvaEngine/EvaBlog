@@ -40,13 +40,6 @@ class PostController extends \Phalcon\Mvc\Controller
 
     public function searchAction()
     {
-        $increase = $this->dispatcher->getParam('increase', 'string');
-        if($increase == 'false') {
-            $increase = false;
-        } else {
-            $increase = true;
-        }
-
         $limit = $this->dispatcher->getParam('limit', 'int', 25);
         $limit = $limit > 100 ? 100 : $limit;
         $limit = $limit < 3 ? 3 : $limit;
@@ -61,7 +54,7 @@ class PostController extends \Phalcon\Mvc\Controller
             'order' => $order,
             'limit' => $limit,
             'page' => $this->dispatcher->getParam('page', 'int', 1),
-            'increase' => $increase
+            'increase' => $increase = $this->dispatcher->getParam('increase')
         );
 
         $postSearcher = new Models\PostSearcher();

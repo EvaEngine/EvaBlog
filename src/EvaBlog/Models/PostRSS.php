@@ -11,6 +11,7 @@ namespace Eva\EvaBlog\Models;
 // +----------------------------------------------------------------------
 
 use Eva\EvaEngine\IoC;
+use Eva\EvaSundries\Utils\BaiduCountUrl;
 
 class PostRSS
 {
@@ -108,11 +109,19 @@ XML;
             $description .= '<p>（更多精彩财经资讯，<a href="http://activity.wallstreetcn.com/app/index.html">点击这里下载华尔街见闻App</a>)</p>';
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+
+            //需要传入百度id
+            $baiduCount = new BaiduCountUrl("9867cf7c8f6ecb07e99d99c51e368a86", $url);
+            $baiduCountUrl = $baiduCount->getFirstRequestUrl();
+            $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
+            $baiduCountUrl = $baiduCount->getSecondRequestUrl();
+            $baiduCountImg .= "<img src=\"$baiduCountUrl\" />";
+
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description} ]]></description>
+    <description><![CDATA[ {$description}{$baiduCountImg} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>Shox</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>

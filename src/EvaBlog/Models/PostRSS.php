@@ -109,9 +109,12 @@ XML;
             $description .= '<p>（更多精彩财经资讯，<a href="http://activity.wallstreetcn.com/app/index.html">点击这里下载华尔街见闻App</a>)</p>';
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+            $rssUrl = $url . '?read-from=rss';
+
 
             //需要传入百度id
-            $baiduCount = new BaiduCountUrl("9867cf7c8f6ecb07e99d99c51e368a86", $url);
+            $baiduCountId = IoC::get('config')->blog->baiduCountId;
+            $baiduCount = new BaiduCountUrl($baiduCountId, $rssUrl);
             $baiduCountUrl = $baiduCount->getFirstRequestUrl();
             $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
             $baiduCountUrl = $baiduCount->getSecondRequestUrl();

@@ -6,5 +6,6 @@ return array(
         'postDomain' => '',
         'postPath' => '/post/{{slug}}',
         'postPreviewPath' => '',
+        'baiduCountId' => '9867cf7c8f6ecb07e99d99c51e368a86',
     ),
 );

@@ -57,11 +57,26 @@ class PostRSS
             $description = $post->summary;
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+
+            //用百度统计对rss阅读量进行统计
+            $rssUrl = $url . '?read-from=rss';
+            $baiduCountId = IoC::get('config')->blog->baiduCountId;
+            $baiduCount = new BaiduCountUrl($baiduCountId, $rssUrl);
+            $baiduCountUrl = $baiduCount->getFirstRequestUrl();
+            $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
+            $baiduCountUrl = $baiduCount->getSecondRequestUrl();
+            $baiduCountImg .= "<img src=\"$baiduCountUrl\" />";
+
+            $baiduCountSwitch = Ioc::get('config')->blog->baiduCountSwitch;
+            if(!$baiduCountSwitch) {
+                $baiduCountImg = '';
+            }
+
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description} ]]></description>
+    <description><![CDATA[ {$description}{$baiduCountImg} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>{$post->username}</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>
@@ -109,16 +124,20 @@ XML;
             $description .= '<p>（更多精彩财经资讯，<a href="http://activity.wallstreetcn.com/app/index.html">点击这里下载华尔街见闻App</a>)</p>';
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+
+            //用百度统计对rss阅读量进行统计
             $rssUrl = $url . '?read-from=rss';
-
-
-            //需要传入百度id
             $baiduCountId = IoC::get('config')->blog->baiduCountId;
             $baiduCount = new BaiduCountUrl($baiduCountId, $rssUrl);
             $baiduCountUrl = $baiduCount->getFirstRequestUrl();
             $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
             $baiduCountUrl = $baiduCount->getSecondRequestUrl();
             $baiduCountImg .= "<img src=\"$baiduCountUrl\" />";
+
+            $baiduCountSwitch = Ioc::get('config')->blog->baiduCountSwitch;
+            if(!$baiduCountSwitch) {
+                $baiduCountImg = '';
+            }
 
             $items .= <<<XML
 \n<item>

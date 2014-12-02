@@ -58,25 +58,25 @@ class PostRSS
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
 
-            //用百度统计对rss阅读量进行统计
-            $rssUrl = $url . '?read-via=rss';
-            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
-            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
-            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
-            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
-            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
-            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
-
-            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
-            if(!$baiduAnalysisSwitch) {
-                $baiduAnalysisImg = '';
-            }
+//            //用百度统计对rss阅读量进行统计
+//            $rssUrl = $url . '?read-via=rss';
+//            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
+//            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
+//            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
+//            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
+//            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
+//            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
+//
+//            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
+//            if(!$baiduAnalysisSwitch) {
+//                $baiduAnalysisImg = '';
+//            }
 
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description}{$baiduAnalysisImg} ]]></description>
+    <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>{$post->username}</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>

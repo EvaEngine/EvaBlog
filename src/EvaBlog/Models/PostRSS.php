@@ -59,7 +59,7 @@ class PostRSS
             $url = call_user_func($this->urlMaker, $post);
 
             //用百度统计对rss阅读量进行统计
-            $rssUrl = $url . '?read-from=rss';
+            $rssUrl = $url . '?read-via=rss';
             $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
             $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
             $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
@@ -126,7 +126,7 @@ XML;
             $url = call_user_func($this->urlMaker, $post);
 
             //用百度统计对rss阅读量进行统计
-            $rssUrl = $url . '?read-from=rss';
+            $rssUrl = $url . '?read-via=rss';
             $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
             $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
             $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();

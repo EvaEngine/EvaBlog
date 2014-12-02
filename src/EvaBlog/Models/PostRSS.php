@@ -11,7 +11,7 @@ namespace Eva\EvaBlog\Models;
 // +----------------------------------------------------------------------
 
 use Eva\EvaEngine\IoC;
-use Eva\EvaSundries\Utils\BaiduCountUrl;
+use Eva\EvaSundries\Utils\BaiduAnalysisUrl;
 
 class PostRSS
 {
@@ -60,23 +60,23 @@ class PostRSS
 
             //用百度统计对rss阅读量进行统计
             $rssUrl = $url . '?read-from=rss';
-            $baiduCountId = IoC::get('config')->blog->baiduCountId;
-            $baiduCount = new BaiduCountUrl($baiduCountId, $rssUrl);
-            $baiduCountUrl = $baiduCount->getFirstRequestUrl();
-            $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
-            $baiduCountUrl = $baiduCount->getSecondRequestUrl();
-            $baiduCountImg .= "<img src=\"$baiduCountUrl\" />";
+            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
+            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
+            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
+            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
+            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
+            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
 
-            $baiduCountSwitch = Ioc::get('config')->blog->baiduCountSwitch;
-            if(!$baiduCountSwitch) {
-                $baiduCountImg = '';
+            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
+            if(!$baiduAnalysisSwitch) {
+                $baiduAnalysisImg = '';
             }
 
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description}{$baiduCountImg} ]]></description>
+    <description><![CDATA[ {$description}{$baiduAnalysisImg} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>{$post->username}</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>
@@ -127,23 +127,23 @@ XML;
 
             //用百度统计对rss阅读量进行统计
             $rssUrl = $url . '?read-from=rss';
-            $baiduCountId = IoC::get('config')->blog->baiduCountId;
-            $baiduCount = new BaiduCountUrl($baiduCountId, $rssUrl);
-            $baiduCountUrl = $baiduCount->getFirstRequestUrl();
-            $baiduCountImg = "<img src=\"$baiduCountUrl\" />";
-            $baiduCountUrl = $baiduCount->getSecondRequestUrl();
-            $baiduCountImg .= "<img src=\"$baiduCountUrl\" />";
+            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
+            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
+            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
+            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
+            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
+            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
 
-            $baiduCountSwitch = Ioc::get('config')->blog->baiduCountSwitch;
-            if(!$baiduCountSwitch) {
-                $baiduCountImg = '';
+            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
+            if(!$baiduAnalysisSwitch) {
+                $baiduAnalysisImg = '';
             }
 
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description}{$baiduCountImg} ]]></description>
+    <description><![CDATA[ {$description}{$baiduAnalysisImg} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>Shox</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>

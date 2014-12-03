@@ -51,6 +51,13 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
 
     public $cacheTime = 86400;  //一天
 
+    public static $defaultDump = array(
+        'id',
+        'userId',
+        'postId',
+        'createdAt',
+    );
+
     public function getCache()
     {
         /** @var \Phalcon\Cache\Backend\Libmemcached $cache */

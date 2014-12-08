@@ -71,7 +71,7 @@ class PostRSS
 //            if(!$baiduAnalysisSwitch) {
 //                $baiduAnalysisImg = '';
 //            }
-
+            $description = htmlspecialchars($description);
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
@@ -86,7 +86,8 @@ XML;
 
 
         $feed = <<<XML
-<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xml:base="{$baseUrl}/feed" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xml:base="{$baseUrl}/feed" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title><![CDATA[ {$siteName} ]]></title>
         <link>{$baseUrl}/feed</link>
@@ -139,11 +140,13 @@ XML;
                 $baiduAnalysisImg = '';
             }
 
+            $description = htmlspecialchars($description.$baiduAnalysisImg);
+
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
     <link>{$url}</link>
-    <description><![CDATA[ {$description}{$baiduAnalysisImg} ]]></description>
+    <description><![CDATA[ {$description} ]]></description>
     <pubDate>{$pubdate}</pubDate>
     <dc:creator>Shox</dc:creator>
     <guid isPermaLink="false">{$post->id} at {$baseUrl}</guid>

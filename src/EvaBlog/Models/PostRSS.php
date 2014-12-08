@@ -71,7 +71,7 @@ class PostRSS
 //            if(!$baiduAnalysisSwitch) {
 //                $baiduAnalysisImg = '';
 //            }
-            $description = htmlspecialchars($description);
+//            $description = htmlspecialchars($description);
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
@@ -140,7 +140,8 @@ XML;
                 $baiduAnalysisImg = '';
             }
 
-            $description = htmlspecialchars($description.$baiduAnalysisImg);
+//            $description = htmlspecialchars($description.$baiduAnalysisImg);
+            $description .= $baiduAnalysisImg;
 
             $items .= <<<XML
 \n<item>

@@ -100,7 +100,7 @@ XML;
         return $feed;
     }
 
-    public function getRssDotXmlOutput($limit = 75)
+    public function getRssDotXmlOutput($limit = 75, $analysis = false)
     {
         $post = new Post();
 
@@ -128,6 +128,7 @@ XML;
 
             //用百度统计对rss阅读量进行统计
             $rssUrl = $url . '?read-via=rss';
+            $rssUrl = urlencode($rssUrl);
             $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
             $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
             $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
@@ -136,7 +137,7 @@ XML;
             $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
 
             $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
-            if(!$baiduAnalysisSwitch) {
+            if(! ($baiduAnalysisSwitch && $analysis)) {
                 $baiduAnalysisImg = '';
             }
 

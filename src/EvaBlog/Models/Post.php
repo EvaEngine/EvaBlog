@@ -24,6 +24,7 @@ class Post extends Entities\Posts
         'sourceName',
         'sourceUrl',
         'count',
+        'commentCount',
         'url' => 'getUrl',
         'imageUrl' => 'getImageUrl',
         'tags' => array(
@@ -152,6 +153,10 @@ class Post extends Entities\Posts
         }
     }
 
+    /**
+     * @param array $query
+     * @return \Phalcon\Mvc\Model\Query\BuilderInterface
+     */
     public function findPosts(array $query = array())
     {
         $itemQuery = $this->getDI()->getModelsManager()->createBuilder();
@@ -173,11 +178,6 @@ class Post extends Entities\Posts
             if (method_exists($this, $methodName)) {
                 $alias_query = $this->$methodName();
                 $query = array_merge($query, $alias_query);
-                // 普通查询条件可以覆盖 alias 的查询条件
-//                foreach ($query as $_k => $_q) {
-//                    $alias_q = isset($alias_query[$_k]) ? $alias_query[$_k] : null;
-//                    $query[$_k] = $_q == null ? $alias_q : $_q;
-//                }
             }
         }
         if (!empty($query['columns'])) {
@@ -195,7 +195,7 @@ class Post extends Entities\Posts
 
         if (!empty($query['type'])) {
             $typeArray = explode(',', $query['type']);
-            if ($typeArray > 1) {
+            if (count($typeArray) > 1) {
                 $itemQuery->inWhere('type', $typeArray);
             } else {
                 $itemQuery->andWhere('type = :type:', array('type' => $query['type']));
@@ -231,13 +231,20 @@ class Post extends Entities\Posts
         }
 
         if (!empty($query['cid'])) {
-            $itemQuery->join('Eva\EvaBlog\Entities\CategoriesPosts', 'id = r.postId', 'r')
-                ->andWhere('r.categoryId = :cid:', array('cid' => $query['cid']));
+            $itemQuery->join('Eva\EvaBlog\Entities\CategoriesPosts', 'id = _cate.postId', '_cate')
+                ->andWhere('_cate.categoryId = :cid:', array('cid' => $query['cid']));
         }
 
         if (!empty($query['tid'])) {
-            $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = r.postId', 'r')
-                ->andWhere('r.tagId = :tid:', array('tid' => $query['tid']));
+            $tidArray = explode(',', $query['tid']);
+            if (count($tidArray) > 1) {
+                $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
+                    ->inWhere('_tag.tagId', $tidArray);
+            } else {
+                $itemQuery->join('Eva\EvaBlog\Entities\TagsPosts', 'id = _tag.postId', '_tag')
+                    ->andWhere('_tag.tagId = :tid:', array('tid' => $query['tid']));
+            }
+
         }
 
         $order = 'createdAt DESC';

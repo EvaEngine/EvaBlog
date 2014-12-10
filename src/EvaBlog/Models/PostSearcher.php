@@ -11,7 +11,11 @@ namespace Eva\EvaBlog\Models;
 // +----------------------------------------------------------------------
 
 use Elasticsearch\Client;
+use Eva\CounterRank\Utils\CounterRankUtil;
+use Eva\EvaCache\CacheManager;
 use Eva\EvaEngine\View\PurePaginator;
+use Eva\EvaSearch\Entities\KeywordCounts;
+use Eva\EvaSearch\Models\KeywordCount;
 use Phalcon\Http\Client\Exception;
 
 class PostSearcher extends Post
@@ -195,68 +199,80 @@ class PostSearcher extends Post
 //        exit();
         $ret = $this->es_client->search($searchParams);
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
+
+        if($query['increase'] !== false) {
+            //使用redis进行关键词统计
+            $countrRankUtil = new CounterRankUtil();
+            $countrRank = $countrRankUtil->getCounterRank("keywords");
+
+            //被搜索的关键词加1,如果不存在,则新创建
+            if(!$countrRank->increase($keyword, 1)) {
+                $countrRank->create($keyword, 1);
+            }
+        }
+
         return $pager;
     }
 
-    public function getRelatedPosts($id, $limit = 5, $days = 30)
+    public function getRelatedPosts($id, $limit = 5, $days = 300)
     {
         if (!$this->getDI()->getConfig()->EvaSearch->relatedPostsEnable) {
             return array();
         }
         $timeout = '1s';
-        $searchParams['index'] = $this->es_config['index_name'];
-        $searchParams['type'] = 'article';
-        $searchParams['size'] = $limit;
-        $searchParams['from'] = 0;
-        $searchParams['timeout'] = $timeout;
-        $cacheKey = 'Blog_relPosts_' . $id . $limit . $days;
-        /** @var \Phalcon\Cache\Backend $cache */
-        $cache = $this->getDI()->getGlobalCache();
-        $postsCached = $cache->get($cacheKey);
-        if ($postsCached != null) {
-            return unserialize($postsCached);
-        }
-        $searchParams['fields'] = array(
-            'id',
-            'title',
-            'createdAt',
-            'slug'
-        );
-        $searchParams['body']['timeout'] = $timeout;
-        $searchParams['body']['query']['more_like_this'] = array(
-            'fields' => array('title', 'content', 'tagNames'),
-            'ids' => array($id)
-        );
-        $filters = array();
-        $filters[]['range'] = array(
-            'createdAt' => array('from' => time() - (86400 * $days))
-        );
-        $filters[]['term'] = array(
-            'status' => 'published'
-        );
-        if ($filters) {
-            $searchParams['body']['filter']['and'] = array(
-                'filters' => $filters,
-                "_cache" => true
+        $cacheKey = implode('_', array(__CLASS__, __FUNCTION__, $id, $limit, $days));
+        $cacheManager = new CacheManager($this->getDI()->getGlobalCache());
+        return $cacheManager->getOrSave(
+            $cacheKey,
+            function () use ($id, $timeout, $days, $limit) {
+                $searchParams['index'] = $this->es_config['index_name'];
+                $searchParams['type'] = 'article';
+                $searchParams['size'] = $limit;
+                $searchParams['from'] = 0;
+                $searchParams['timeout'] = $timeout;
+                $searchParams['fields'] = array(
+                    'id',
+                    'title',
+                    'createdAt',
+                    'slug'
+                );
+                $searchParams['body']['timeout'] = $timeout;
+                $searchParams['body']['query']['more_like_this'] = array(
+                    'fields' => array('title', 'content', 'tagNames'),
+                    'ids' => array($id)
+                );
+                $filters = array();
+                $filters[]['range'] = array(
+                    'createdAt' => array('from' => time() - (86400 * $days))
+                );
+                $filters[]['term'] = array(
+                    'status' => 'published'
+                );
+                if ($filters) {
+                    $searchParams['body']['filter']['and'] = array(
+                        'filters' => $filters,
+                        "_cache" => true
 
-            );
-        }
-        try {
-            $ret = $this->es_client->search($searchParams);
-        } catch (\Exception $e) {
-            $ret = null;
-        }
-        $posts = array();
-        if ($ret) {
-            foreach ($ret['hits']['hits'] as $hit) {
-                foreach ($hit['fields'] as $_k => $_v) {
-                    $hit['fields'][$_k] = $_v[0];
+                    );
                 }
+                try {
+                    $ret = $this->es_client->search($searchParams);
+                } catch (\Exception $e) {
+                    $ret = null;
+                }
+                $posts = array();
+                if ($ret) {
+                    foreach ($ret['hits']['hits'] as $hit) {
+                        foreach ($hit['fields'] as $_k => $_v) {
+                            $hit['fields'][$_k] = $_v[0];
+                        }
 
-                $posts[] = $hit['fields'];
-            }
-        }
-        $cache->save($cacheKey, serialize($posts), 600);
-        return $posts;
+                        $posts[] = $hit['fields'];
+                    }
+                }
+                return $posts;
+            },
+            600
+        );
     }
 }

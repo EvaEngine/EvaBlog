@@ -11,6 +11,7 @@ namespace Eva\EvaBlog\Models;
 // +----------------------------------------------------------------------
 
 use Eva\EvaEngine\IoC;
+use Eva\EvaSundries\Utils\BaiduAnalysisUrl;
 
 class PostRSS
 {
@@ -56,6 +57,21 @@ class PostRSS
             $description = $post->summary;
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+
+//            //用百度统计对rss阅读量进行统计
+//            $rssUrl = $url . '?read-via=rss';
+//            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
+//            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
+//            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
+//            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
+//            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
+//            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
+//
+//            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
+//            if(!$baiduAnalysisSwitch) {
+//                $baiduAnalysisImg = '';
+//            }
+//            $description = htmlspecialchars($description);
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>
@@ -70,7 +86,8 @@ XML;
 
 
         $feed = <<<XML
-<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xml:base="{$baseUrl}/feed" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xml:base="{$baseUrl}/feed" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title><![CDATA[ {$siteName} ]]></title>
         <link>{$baseUrl}/feed</link>
@@ -83,7 +100,7 @@ XML;
         return $feed;
     }
 
-    public function getRssDotXmlOutput($limit = 75)
+    public function getRssDotXmlOutput($limit = 75, $analysis = false)
     {
         $post = new Post();
 
@@ -108,6 +125,25 @@ XML;
             $description .= '<p>（更多精彩财经资讯，<a href="http://activity.wallstreetcn.com/app/index.html">点击这里下载华尔街见闻App</a>)</p>';
             $pubdate = date($this->timeFormat, $post->createdAt);
             $url = call_user_func($this->urlMaker, $post);
+
+            //用百度统计对rss阅读量进行统计
+            $rssUrl = $url . '?read-via=rss';
+            $rssUrl = urlencode($rssUrl);
+            $baiduAnalysisId = IoC::get('config')->blog->baiduAnalysisId;
+            $baiduAnalysis = new BaiduAnalysisUrl($baiduAnalysisId, $rssUrl);
+            $baiduAnalysisUrl = $baiduAnalysis->getFirstRequestUrl();
+            $baiduAnalysisImg = "<img src=\"$baiduAnalysisUrl\" />";
+            $baiduAnalysisUrl = $baiduAnalysis->getSecondRequestUrl();
+            $baiduAnalysisImg .= "<img src=\"$baiduAnalysisUrl\" />";
+
+            $baiduAnalysisSwitch = Ioc::get('config')->blog->baiduAnalysisSwitch;
+            if(! ($baiduAnalysisSwitch && $analysis)) {
+                $baiduAnalysisImg = '';
+            }
+
+//            $description = htmlspecialchars($description.$baiduAnalysisImg);
+            $description .= $baiduAnalysisImg;
+
             $items .= <<<XML
 \n<item>
     <title><![CDATA[ {$post->title} ]]></title>

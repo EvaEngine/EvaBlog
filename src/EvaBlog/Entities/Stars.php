@@ -46,10 +46,66 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
 
     protected $tableName = 'blog_stars';
 
+
+    public $cachePrefix = 'eva_blog_stars_';
+
+    public $cacheTime = 86400;  //一天
+
+    public static $defaultDump = array(
+        'id',
+        'userId',
+        'postId',
+        'createdAt',
+    );
+
+    public function getCache()
+    {
+        /** @var \Phalcon\Cache\Backend\Libmemcached $cache */
+        $cache =  $this->getDI()->get('modelsCache');
+        return $cache;
+    }
+
+    public function createCacheKey($params){
+        ksort($params);
+        $str = $this->cachePrefix;
+        foreach($params as $k=>$v){
+            $str .= $k.'_'.$v.'_';
+        }
+
+        return $str;
+    }
+
+    public function refreshCache($params)
+    {
+        $cacheKey = $this->createCacheKey($params);
+        if($this->getCache()->exists($cacheKey)){
+            $this->getCache()->delete($cacheKey);
+        }
+    }
+
+
+    public function afterSave()
+    {
+        $this->refreshCache(array('userId'=>$this->userId));
+        $this->refreshCache(array('postId'=>$this->postId));
+        $this->refreshCache(array('userId'=>$this->userId,'postId'=>$this->postId));
+    }
+
+    public function afterDelete()
+    {
+        $this->refreshCache(array('userId'=>$this->userId));
+        $this->refreshCache(array('postId'=>$this->postId));
+        $this->refreshCache(array('userId'=>$this->userId,'postId'=>$this->postId));
+    }
+
     public function initialize()
     {
         $this->hasOne('postId', 'Eva\EvaBlog\Entities\Posts', 'id', array(
             'alias' => 'post'
+        ));
+
+        $this->hasOne('userId', 'Eva\EvaUser\Entities\Users', 'id', array(
+            'alias' => 'user'
         ));
     }
 }

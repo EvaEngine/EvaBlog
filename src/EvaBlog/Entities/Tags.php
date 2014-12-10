@@ -61,7 +61,7 @@ class Tags extends \Eva\EvaEngine\Mvc\Model
     {
         $this->hasManyToMany(
             'id',
-            'Eva\EvaBlog\Entities\PostsTags',
+            'Eva\EvaBlog\Entities\TagsPosts',
             'tagId',
             'postId',
             'Eva\EvaBlog\Entities\Posts',

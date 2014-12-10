@@ -54,6 +54,7 @@ class PostController extends \Phalcon\Mvc\Controller
             'order' => $order,
             'limit' => $limit,
             'page' => $this->dispatcher->getParam('page', 'int', 1),
+            'increase' => $increase = $this->dispatcher->getParam('increase')
         );
 
         $postSearcher = new Models\PostSearcher();

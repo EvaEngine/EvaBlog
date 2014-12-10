@@ -26,10 +26,10 @@
                 Category List
             </a>
         </li>
-        <li class="tobe-highlight" data-highlight-url="/admin/topic.*">
-            <a href="/admin/topic">
+        <li class="tobe-highlight" data-highlight-url="/admin/special.*">
+            <a href="/admin/special">
                 <i class="icon-double-angle-right"></i>
-                Topics
+                Specials
             </a>
         </li>
 

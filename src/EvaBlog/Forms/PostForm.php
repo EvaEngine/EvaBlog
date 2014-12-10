@@ -173,7 +173,7 @@ class PostForm extends Form
         }
         $category = new Models\Category();
         $categories = $category->find(array(
-            "order" => "id DESC",
+            "order" => "sortOrder DESC",
             "limit" => 100
         ));
 

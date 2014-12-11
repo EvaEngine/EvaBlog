@@ -454,6 +454,9 @@ class Post extends Entities\Posts
         $this->delete();
     }
 
+    /*
+     * 判断post是否属于category分类
+     */
     public function hasCategory($categoryId) {
         $postId = $this->id;
 

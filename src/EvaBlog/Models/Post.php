@@ -453,4 +453,16 @@ class Post extends Entities\Posts
         $this->text->delete();
         $this->delete();
     }
+
+    public function hasCategory($categoryId) {
+        $postId = $this->id;
+
+        $categoriesPosts = $this->getModelsManager()->executeQuery("SELECT * FROM Eva\EvaBlog\Entities\CategoriesPosts AS c WHERE c.postId=$postId AND c.categoryId=$categoryId LIMIT 1");
+
+        foreach ($categoriesPosts as $categoriesPost) {
+            return true;
+        }
+
+        return false;
+    }
 }

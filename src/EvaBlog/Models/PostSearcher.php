@@ -198,15 +198,20 @@ class PostSearcher extends Post
 //        echo(json_encode($searchParams, JSON_UNESCAPED_UNICODE));
 //        exit();
         $ret = $this->es_client->search($searchParams);
+        foreach ($ret['hits']['hits'] as $_k => $_v) {
+            $ret['hits']['hits'][$_k]['_source']['image'] = $this->getImageUrlByUri($ret['hits']['hits'][$_k]['_source']['image']);
+            //getImageUrl
+        }
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
 
-        if($query['increase'] !== false) {
+
+        if ($query['increase'] !== false) {
             //使用redis进行关键词统计
             $countrRankUtil = new CounterRankUtil();
             $countrRank = $countrRankUtil->getCounterRank("keywords");
 
             //被搜索的关键词加1,如果不存在,则新创建
-            if(!$countrRank->increase($keyword, 1)) {
+            if (!$countrRank->increase($keyword, 1)) {
                 $countrRank->create($keyword, 1);
             }
         }
@@ -234,7 +239,8 @@ class PostSearcher extends Post
                     'id',
                     'title',
                     'createdAt',
-                    'slug'
+                    'slug',
+                    'image',
                 );
                 $searchParams['body']['timeout'] = $timeout;
                 $searchParams['body']['query']['more_like_this'] = array(
@@ -266,7 +272,7 @@ class PostSearcher extends Post
                         foreach ($hit['fields'] as $_k => $_v) {
                             $hit['fields'][$_k] = $_v[0];
                         }
-
+                        $hit['fields']['image'] = $this->getImageUrlByUri($hit['fields']['image']);
                         $posts[] = $hit['fields'];
                     }
                 }

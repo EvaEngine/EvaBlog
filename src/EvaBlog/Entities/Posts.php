@@ -441,6 +441,9 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
     public function getImageUrlByUri($uri)
     {
+        if (!$uri) {
+            return null;
+        }
         $tag = $this->getDI()->getTag();
         return $tag::thumb($uri);
     }

@@ -336,7 +336,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
         $contentHtml = preg_replace_callback(
             '/href="(\/.+(png|jpg|jpeg|gif))?"/',
-            function($matches) use ($staticUri) {
+            function ($matches) use ($staticUri) {
                 return 'href="' . $staticUri . $matches[1] . '"';
             },
             $contentHtml
@@ -344,7 +344,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
         $contentHtml = preg_replace_callback(
             '/src="(\/[^"]+)\.(png|jpg|jpeg|gif)"/',
-            function($matches) use ($staticUri) {
+            function ($matches) use ($staticUri) {
                 return 'src="' . $staticUri . $matches[1] . ',w_640.' . $matches[2] . '"';
             },
             $contentHtml
@@ -408,7 +408,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
     {
         $postDomain = trim($this->getDI()->getConfig()->blog->postDomain);
 
-        $postDomain = $postDomain && !preg_match('/http(s?):\/\//i', $postDomain)  ? 'http://'.$postDomain : $postDomain;
+        $postDomain = $postDomain && !preg_match('/http(s?):\/\//i',
+            $postDomain) ? 'http://' . $postDomain : $postDomain;
         return $postDomain . $this->getUrlPath();
     }
 
@@ -434,8 +435,16 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         if (!$this->image) {
             return null;
         }
+        return $this->getImageUrlByUri($this->image);
 
+    }
+
+    public function getImageUrlByUri($uri)
+    {
+        if (!$uri) {
+            return null;
+        }
         $tag = $this->getDI()->getTag();
-        return $tag::thumb($this->image);
+        return $tag::thumb($uri);
     }
 }

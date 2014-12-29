@@ -171,7 +171,7 @@ class PostSearcher extends Post
                 'type' => 'best_fields',
 //                "tie_breaker" => 1.0
             );
-            $searchParams['body']['min_score'] = 0.8;
+            $searchParams['body']['min_score'] = 0.4;
 //            $gravity = 5;
 //            $now = time();
 //            $searchParams['body']['query'] = array(

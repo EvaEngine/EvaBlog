@@ -128,19 +128,19 @@ class PostSearcher extends Post
                 'tagNames' => $query['tags']
             );
         }
-        $sort = array();
-        if (!empty($query['order']) && $orderMapping[$query['order']]) {
-            $sort = array_merge($sort, $orderMapping[$query['order']]);
-        }
-        $sort = array_merge(
-            $sort,
-            array(
-                '_score' => array(
-                    'order' => 'desc'
-                )
-            )
-        );
-        $searchParams['body']['sort'] = $sort;
+//        $sort = array();
+//        if (!empty($query['order']) && $orderMapping[$query['order']]) {
+//            $sort = array_merge($sort, $orderMapping[$query['order']]);
+//        }
+//        $sort = array_merge(
+//            $sort,
+//            array(
+//                '_score' => array(
+//                    'order' => 'desc'
+//                )
+//            )
+//        );
+//        $searchParams['body']['sort'] = $sort;
         if ($filters) {
             $searchParams['body']['filter']['and'] = array(
                 'filters' => $filters,
@@ -165,13 +165,53 @@ class PostSearcher extends Post
         }
         $keyword = isset($query['q']) && count(trim($query['q'])) > 0 ? trim($query['q']) : false;
         if ($keyword) {
-            $searchParams['body']['query']['multi_match'] = array(
-                'query' => $query['q'],
-                "fields" => array("content", "title"),
-                'type' => 'best_fields',
+            $_query = array(
+                'multi_match' =>
+                    array(
+                        'query' => $query['q'],
+                        "fields" => array("content", "title"),
+                        'type' => 'best_fields',
 //                "tie_breaker" => 1.0
+                    )
             );
-            $searchParams['body']['min_score'] = 0.3;
+//            $searchParams['body']['query'] = $_query;
+            /*
+              "function_score": {
+            "query": {
+                "multi_match": {
+                    "query": "华尔街见闻",
+                    "fields": [
+                        "content",
+                        "title"
+                    ],
+                    "type": "best_fields"
+                }
+            },
+            "functions": [
+                {
+                    "script_score": {
+                        "script": "(_score - 1) / pow((1419864850 - doc['createdAt'].value), 5)"
+                    }
+                }
+            ]
+        }
+             * */
+            $now = time();
+            $searchParams['body']['query'] = array(
+                'function_score' => array(
+                    'functions' => array(
+                        array(
+                            'script_score' => array(
+                                'script' => "(_score - 1) / pow(({$now} - doc['createdAt'].value), 5)"
+                            )
+                        )
+                    ),
+                    'query' => $_query
+                ),
+            );
+
+//            $searchParams['body']['min_score'] = 0.3;
+
 //            $gravity = 5;
 //            $now = time();
 //            $searchParams['body']['query'] = array(

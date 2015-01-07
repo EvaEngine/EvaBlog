@@ -140,7 +140,11 @@ class PostSearcher extends Post
 //                )
 //            )
 //        );
-//        $searchParams['body']['sort'] = $sort;
+        $searchParams['body']['sort'] = array(
+            '_score' => array(
+                'order' => 'desc'
+            )
+        );
         if ($filters) {
             $searchParams['body']['filter']['and'] = array(
                 'filters' => $filters,
@@ -171,7 +175,7 @@ class PostSearcher extends Post
                         'query' => $query['q'],
                         "fields" => array("content", "title"),
                         'type' => 'best_fields',
-//                "tie_breaker" => 1.0
+                        "tie_breaker" => 0.3
                     )
             );
 //            $searchParams['body']['query'] = $_query;
@@ -196,13 +200,14 @@ class PostSearcher extends Post
             ]
         }
              * */
-            $now = time();
+            // 防止文章创建时间和当前时间一样时，计算公式的分母为0
+            $now = time() + 7200;
             $searchParams['body']['query'] = array(
                 'function_score' => array(
                     'functions' => array(
                         array(
                             'script_score' => array(
-                                'script' => "(_score - 1) / pow(({$now} - doc['createdAt'].value), 5)"
+                                'script' => "_score / atan(({$now} - doc['createdAt'].value) / 1296000)"
                             )
                         )
                     ),

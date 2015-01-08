@@ -606,11 +606,11 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 <script>
 (function(root, factory){
     if (typeof define === 'function' && define.amd) {
-        require(["moment", "jquery"], factory);
+        require(["moment", "jquery","underscore"], factory);
     } else {
-        factory(root.moment, root.jQuery);
+        factory(root.moment, root.jQuery,root._);
     }
-})(this, function(moment, $){
+})(this, function(moment, $,_){
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");
         connectionUI.on('click', '[data-role="submiter"]', function () {

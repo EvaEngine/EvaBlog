@@ -33,13 +33,8 @@
 $flashOutput = trim(strip_tags($this->tag->flashOutput()));
 if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     <script>
-        var refreshSrc="<?= $item->getAbsoluteUrl() ?>?_eva_refresh_dispatch_cache=1";
-        require(['jquery'],function($){
-            $.ajax({
-                url:refreshSrc,
-                success:function(){}
-            })
-        })
+        var refreshSrc="<?= $item->getAbsoluteUrl() ?>?_eva_refresh_dispatch_cache=1&timestamp="+Date.now();
+        new Image().src = refreshSrc;
     </script>
 <? endif; ?>
 <? $textForm = $form->getForm('text') ?>

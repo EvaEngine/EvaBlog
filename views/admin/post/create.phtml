@@ -175,6 +175,216 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                         </label>
                                     </div>
 
+                                    <!-- begin -->
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Tags</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Enter Tags ..." value="<?= $item ? $item->getTagString() : '' ?>"
+                                                                   name="tags" class="tag-input form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Type</h5>
+                                            <span class="widget-toolbar">
+                                                <a data-action="collapse" href="#">
+                                                    <i class="icon-chevron-up"></i>
+                                                </a>
+                                            </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="control-group">
+                                                            <label class="block clearfix">
+                                                                <?=
+                                                                $form->render(
+                                                                    'type',
+                                                                    array(
+                                                                        'class' => 'form-control',
+                                                                    )
+                                                                )?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;" >
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Change Author</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="control-group">
+                                                            <label class="block clearfix">
+                                                                <?=
+                                                                $form->render(
+                                                                    'username',
+                                                                    array(
+                                                                        'class' => 'form-control autocomplete',
+                                                                        'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
+                                                                        'data-autocomplete-target' => 'input[name=userId]',
+                                                                        'data-autocomplete-fill-name' => 'id',
+                                                                        'data-autocomplete-display-key' => 'username',
+                                                                        'data-autocomplete-clear-fill-when-nomatch' => '1',
+                                                                        'placeholder' => 'Use current user with no fill',
+                                                                    )
+                                                                )?>
+                                                                <?=
+                                                                $form->render(
+                                                                    'userId',
+                                                                    array(
+                                                                        'class' => 'form-control',
+                                                                    )
+                                                                )?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Comment Status</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="control-group">
+                                                            <label class="block clearfix">
+                                                                <?=
+                                                                $form->render(
+                                                                    'commentStatus',
+                                                                    array(
+                                                                        'class' => 'form-control',
+                                                                    )
+                                                                )?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Publish Time</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="input-group">
+                                                            <input name="day" type="text" data-date-format="yyyy-mm-dd" class="form-control date-picker"
+                                                                   value="<?= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'Y-m-d') ?>">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-calendar bigger-110"></i>
+                                                    </span>
+                                                        </div>
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <input name="time" type="text" class="form-control time-picker"
+                                                                   value="<?= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'H:i:s') ?>">
+                                                            <span class="input-group-addon">
+                                                                <i class="icon-time bigger-110"></i>
+                                                            </span>
+                                                            <?=
+                                                            $form->render(
+                                                                'createdAt',
+                                                                array()
+                                                            )?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Post Source</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                        <div class="control-group">
+                                                            <label class="block clearfix">
+                                                                Source Name
+                                                                <?=
+                                                                $form->render(
+                                                                    'sourceName',
+                                                                    array(
+                                                                        'class' => 'form-control',
+                                                                    )
+                                                                )?>
+                                                            </label>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="block clearfix">
+                                                                Source Url
+                                                                <?=
+                                                                $form->render(
+                                                                    'sourceUrl',
+                                                                    array(
+                                                                        'class' => 'form-control',
+                                                                    )
+                                                                )?>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+                                    </div>
+                                    <!-- end -->
+
+
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-xs-3">
@@ -302,205 +512,205 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                     <!--widgex box-->
 
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Tags</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-up"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="form-group">
-                                                    <input type="text" placeholder="Enter Tags ..." value="<?= $item ? $item->getTagString() : '' ?>"
-                                                    name="tags" class="tag-input form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Tags</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-up"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="form-group">-->
+<!--                                                    <input type="text" placeholder="Enter Tags ..." value="--><?//= $item ? $item->getTagString() : '' ?><!--"-->
+<!--                                                    name="tags" class="tag-input form-control">-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Comment Status</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-down"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="control-group">
-                                                    <label class="block clearfix">
-                                                        <?=
-                                                        $form->render(
-                                                            'commentStatus',
-                                                            array(
-                                                                'class' => 'form-control',
-                                                            )
-                                                        )?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Comment Status</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-down"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="control-group">-->
+<!--                                                    <label class="block clearfix">-->
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'commentStatus',
+//                                                            array(
+//                                                                'class' => 'form-control',
+//                                                            )
+//                                                        )?>
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Type</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-down"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="control-group">
-                                                    <label class="block clearfix">
-                                                        <?=
-                                                        $form->render(
-                                                            'type',
-                                                            array(
-                                                                'class' => 'form-control',
-                                                            )
-                                                        )?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Type</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-down"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="control-group">-->
+<!--                                                    <label class="block clearfix">-->
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'type',
+//                                                            array(
+//                                                                'class' => 'form-control',
+//                                                            )
+//                                                        )?>
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box collapsed">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Publish Time</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-down"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="input-group">
-                                                    <input name="day" type="text" data-date-format="yyyy-mm-dd" class="form-control date-picker"
-                                                    value="<?= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'Y-m-d') ?>">
-                                                    <span class="input-group-addon">
-                                                        <i class="icon-calendar bigger-110"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="input-group bootstrap-timepicker">
-                                                    <input name="time" type="text" class="form-control time-picker"
-                                                    value="<?= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'H:i:s') ?>">
-                                                    <span class="input-group-addon">
-                                                        <i class="icon-time bigger-110"></i>
-                                                    </span>
-                                                    <?=
-                                                    $form->render(
-                                                        'createdAt',
-                                                        array()
-                                                    )?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box collapsed">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Publish Time</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-down"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="input-group">-->
+<!--                                                    <input name="day" type="text" data-date-format="yyyy-mm-dd" class="form-control date-picker"-->
+<!--                                                    value="--><?//= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'Y-m-d') ?><!--">-->
+<!--                                                    <span class="input-group-addon">-->
+<!--                                                        <i class="icon-calendar bigger-110"></i>-->
+<!--                                                    </span>-->
+<!--                                                </div>-->
+<!--                                                <div class="input-group bootstrap-timepicker">-->
+<!--                                                    <input name="time" type="text" class="form-control time-picker"-->
+<!--                                                    value="--><?//= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'H:i:s') ?><!--">-->
+<!--                                                    <span class="input-group-addon">-->
+<!--                                                        <i class="icon-time bigger-110"></i>-->
+<!--                                                    </span>-->
+<!--                                                    --><?//=
+//                                                    $form->render(
+//                                                        'createdAt',
+//                                                        array()
+//                                                    )?>
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box collapsed">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Change Author</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-down"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="control-group">
-                                                    <label class="block clearfix">
-                                                        <?=
-                                                        $form->render(
-                                                            'username',
-                                                            array(
-                                                                'class' => 'form-control autocomplete',
-                                                                'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
-                                                                'data-autocomplete-target' => 'input[name=userId]',
-                                                                'data-autocomplete-fill-name' => 'id',
-                                                                'data-autocomplete-display-key' => 'username',
-                                                                'data-autocomplete-clear-fill-when-nomatch' => '1',
-                                                                'placeholder' => 'Use current user with no fill',
-                                                            )
-                                                        )?>
-                                                        <?=
-                                                        $form->render(
-                                                            'userId',
-                                                            array(
-                                                                'class' => 'form-control',
-                                                            )
-                                                        )?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box collapsed">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Change Author</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-down"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="control-group">-->
+<!--                                                    <label class="block clearfix">-->
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'username',
+//                                                            array(
+//                                                                'class' => 'form-control autocomplete',
+//                                                                'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
+//                                                                'data-autocomplete-target' => 'input[name=userId]',
+//                                                                'data-autocomplete-fill-name' => 'id',
+//                                                                'data-autocomplete-display-key' => 'username',
+//                                                                'data-autocomplete-clear-fill-when-nomatch' => '1',
+//                                                                'placeholder' => 'Use current user with no fill',
+//                                                            )
+//                                                        )?>
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'userId',
+//                                                            array(
+//                                                                'class' => 'form-control',
+//                                                            )
+//                                                        )?>
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
-                                    <div class="hr hr-double dotted"></div>
-                                    <div class="widget-box collapsed">
-                                        <div class="widget-header widget-header-small">
-                                            <h5 class="lighter">Post Source</h5>
-                                            <span class="widget-toolbar">
-                                                <a data-action="collapse" href="#">
-                                                    <i class="icon-chevron-down"></i>
-                                                </a>
-                                            </span>
-                                        </div>
-
-                                        <div class="widget-body">
-                                            <div class="widget-main">
-                                                <div class="control-group">
-                                                    <label class="block clearfix">
-                                                        Source Name
-                                                        <?=
-                                                        $form->render(
-                                                            'sourceName',
-                                                            array(
-                                                                'class' => 'form-control',
-                                                            )
-                                                        )?>
-                                                    </label>
-                                                </div>
-                                                <div class="control-group">
-                                                    <label class="block clearfix">
-                                                        Source Url
-                                                        <?=
-                                                        $form->render(
-                                                            'sourceUrl',
-                                                            array(
-                                                                'class' => 'form-control',
-                                                            )
-                                                        )?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="hr hr-double dotted"></div>-->
+<!--                                    <div class="widget-box collapsed">-->
+<!--                                        <div class="widget-header widget-header-small">-->
+<!--                                            <h5 class="lighter">Post Source</h5>-->
+<!--                                            <span class="widget-toolbar">-->
+<!--                                                <a data-action="collapse" href="#">-->
+<!--                                                    <i class="icon-chevron-down"></i>-->
+<!--                                                </a>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="widget-body">-->
+<!--                                            <div class="widget-main">-->
+<!--                                                <div class="control-group">-->
+<!--                                                    <label class="block clearfix">-->
+<!--                                                        Source Name-->
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'sourceName',
+//                                                            array(
+//                                                                'class' => 'form-control',
+//                                                            )
+//                                                        )?>
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                                <div class="control-group">-->
+<!--                                                    <label class="block clearfix">-->
+<!--                                                        Source Url-->
+<!--                                                        --><?//=
+//                                                        $form->render(
+//                                                            'sourceUrl',
+//                                                            array(
+//                                                                'class' => 'form-control',
+//                                                            )
+//                                                        )?>
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <!--widgex box-->
 
                                 </div>

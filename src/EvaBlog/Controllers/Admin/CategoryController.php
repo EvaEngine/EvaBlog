@@ -25,7 +25,8 @@ class CategoryController extends ControllerBase
 
         $items = $this->modelsManager->createBuilder()
             ->from('Eva\EvaBlog\Models\Category')
-            ->orderBy('id DESC');
+            ->orderBy('id DESC')
+            ->orderBy('sortOrder DESC');
 
         $paginator = new \Eva\EvaEngine\Paginator(array(
             "builder" => $items,

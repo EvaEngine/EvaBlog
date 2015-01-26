@@ -173,6 +173,7 @@ class Post extends Entities\Posts
             'count' => 'count ASC',
             '-count' => 'count DESC',
         );
+
         if (!empty($query['alias'])) {
             $methodName = 'alias' . ucfirst($query['alias']);
             if (method_exists($this, $methodName)) {
@@ -180,6 +181,7 @@ class Post extends Entities\Posts
                 $query = array_merge($query, $alias_query);
             }
         }
+
         if (!empty($query['columns'])) {
             $itemQuery->columns($query['columns']);
         }
@@ -233,6 +235,15 @@ class Post extends Entities\Posts
         if (!empty($query['cid'])) {
             $itemQuery->join('Eva\EvaBlog\Entities\CategoriesPosts', 'id = _cate.postId', '_cate')
                 ->andWhere('_cate.categoryId = :cid:', array('cid' => $query['cid']));
+        }
+
+        if (!empty($query['tag'])) {
+            $tag = Entities\Tags::findFirst("tagName = '{$query['tag']}'");
+            if ($tag) {
+                $query['tid'] = $tag->id;
+            } else {
+                $query['tid'] = -1;
+            }
         }
 
         if (!empty($query['tid'])) {
@@ -457,7 +468,8 @@ class Post extends Entities\Posts
     /*
      * 判断post是否属于category分类
      */
-    public function hasCategory($categoryId) {
+    public function hasCategory($categoryId)
+    {
         $postId = $this->id;
 
         $categoriesPosts = $this->getModelsManager()->executeQuery("SELECT * FROM Eva\EvaBlog\Entities\CategoriesPosts AS c WHERE c.postId=$postId AND c.categoryId=$categoryId LIMIT 1");

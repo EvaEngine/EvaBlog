@@ -10,8 +10,11 @@ namespace Eva\EvaBlog\Models;
 
 //暴露数据源，优化百度统计
 use Eva\EvaEngine\IoC;
+use Eva\EvaFileSystem\ViewHelpers\ThumbWithClass;
 
 class PostSitemap {
+
+    private $timeFormat = "Y-m-d\TH:i:s";
 
     public function getListOutput($limit = 75) {
         $post = new Post();
@@ -75,11 +78,46 @@ XML;
         $pager = $paginator->getPaginate();
 
         foreach($pager->items as $item) {
+
+            $title = $item->title;
+            $content = $item->getContentHtml();
+
+            $tagString = $item->getTagString();
+            $tagArray = explode(',', $tagString);
+            $tags = '';
+            foreach($tagArray as $tag) {
+                $tags .= <<<XML
+<tag><![CDATA[ $tag ]]></tag>
+XML;
+            }
+
+            $pubTime = date($this->timeFormat, $post->createdAt);
+
+//            $thumbloc = $item->image ? $this->tag->thumbWithClass($item->image, 'index-news-cover') : '/img/article.jpg';
+            $thumb = new ThumbWithClass();
+            $thumbloc = $item->image ? $thumb($item->image, 'index-news-cover') : '/img/article.jpg';
+
+            $author_nickname = $item->user->username;
+            $author_url = $baseUrl . '/news?uid=' . $item->user->id;
+
+
             $urls .= <<<XML
 <url>
     <loc>$baseUrl/node/$item->id</loc>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
+    <data>
+        <display>
+            <title><![CDATA[ $title ]]></title>
+            <content><![CDATA[ $content ]]></content>
+            $tags
+            <pubTime>$pubTime</pubTime>
+            <thumbnail loc="$thumbloc"></thumbnail>
+            <author nickname="$author_nickname" url="$author_url"></author>
+            <replyCount>$post->commentCount</replyCount>
+            <property></property>
+        </display>
+    </data>
 </url>
 XML;
         }

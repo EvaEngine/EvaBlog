@@ -49,7 +49,7 @@ class PostSitemap {
 
         $sitemap = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
-<sitemapindex>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd">
     $locs
 </sitemapindex>
 XML;
@@ -128,7 +128,7 @@ XML;
 
         $urlset = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
-<urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 $urls
 </urlset>
 XML;

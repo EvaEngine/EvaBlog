@@ -38,10 +38,12 @@ class PostSitemap {
 
         $pager = $paginator->getPaginate();
         $total_pages = $pager->total_pages;
+        $lastmod = date('Y-m-d', time() - 3600*24);
+
 
         $index = 1;
         while($index <= $total_pages) {
-            $locs .= "\n<sitemap><loc>$baseUrl/sitemap/$index.xml</loc></sitemap>\n";
+            $locs .= "\n<sitemap><loc>$baseUrl/sitemap/$index.xml</loc><lastmod>$lastmod</lastmod></sitemap>\n";
             $index++;
         }
 
@@ -100,10 +102,12 @@ XML;
             $author_nickname = $item->user->username;
             $author_url = $baseUrl . '/news?uid=' . $item->user->id;
 
+            $lastmod = date('Y-m-d', time() - 3600*24);
 
             $urls .= <<<XML
 <url>
     <loc>$baseUrl/node/$item->id</loc>
+    <lastmod>$pubTime</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
     <data>

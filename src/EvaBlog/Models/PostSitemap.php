@@ -16,7 +16,7 @@ class PostSitemap {
 
     private $timeFormat = "Y-m-d\TH:i:s";
 
-    public function getListOutput($limit = 75) {
+    public function getListOutput($limit = 200) {
         $post = new Post();
         $config = IoC::get('config');
         $baseUrl = $config->baseUri;
@@ -55,7 +55,7 @@ XML;
         return $sitemap;
     }
 
-    public function getIndexOutput($page, $limit = 75) {
+    public function getIndexOutput($page, $limit = 200) {
         $post = new Post();
         $config = IoC::get('config');
         $baseUrl = $config->baseUri;

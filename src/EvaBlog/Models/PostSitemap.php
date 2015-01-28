@@ -107,7 +107,7 @@ XML;
             $urls .= <<<XML
 <url>
     <loc>$baseUrl/node/$item->id</loc>
-    <lastmod>$pubTime</lastmod>
+    <lastmod>$lastmod</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
     <data>

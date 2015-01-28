@@ -91,7 +91,7 @@ XML;
 XML;
             }
 
-            $pubTime = date($this->timeFormat, $post->createdAt);
+            $pubTime = date($this->timeFormat, $item->createdAt);
 
 //            $thumbloc = $item->image ? $this->tag->thumbWithClass($item->image, 'index-news-cover') : '/img/article.jpg';
             $thumb = new ThumbWithClass();

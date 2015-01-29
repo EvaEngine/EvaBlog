@@ -69,6 +69,7 @@ class Post extends Entities\Posts
             'id',
             'username',
             'screenName',
+            'avatar',
         ),
     );
 

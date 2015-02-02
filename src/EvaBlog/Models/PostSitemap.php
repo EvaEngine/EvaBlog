@@ -49,7 +49,7 @@ class PostSitemap {
 
         $sitemap = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd">
+<sitemapindex>
     $locs
 </sitemapindex>
 XML;
@@ -79,6 +79,8 @@ XML;
 
         $pager = $paginator->getPaginate();
 
+        $thumb = new ThumbWithClass();
+
         foreach($pager->items as $item) {
 
             $title = $item->title;
@@ -95,8 +97,6 @@ XML;
 
             $pubTime = date($this->timeFormat, $item->createdAt);
 
-//            $thumbloc = $item->image ? $this->tag->thumbWithClass($item->image, 'index-news-cover') : '/img/article.jpg';
-            $thumb = new ThumbWithClass();
             $thumbloc = $item->image ? $thumb($item->image, 'index-news-cover') : '/img/article.jpg';
 
             $author_nickname = $item->user->username;
@@ -128,7 +128,7 @@ XML;
 
         $urlset = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset>
 $urls
 </urlset>
 XML;

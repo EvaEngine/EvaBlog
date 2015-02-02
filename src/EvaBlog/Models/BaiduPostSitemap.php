@@ -8,7 +8,7 @@
 
 namespace Eva\EvaBlog\Models;
 
-//暴露数据源，优化百度统计
+//暴露数据源，优化百度搜索 sitemap
 use Eva\EvaEngine\IoC;
 use Eva\EvaFileSystem\ViewHelpers\ThumbWithClass;
 

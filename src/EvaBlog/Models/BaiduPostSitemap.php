@@ -21,6 +21,8 @@ class BaiduPostSitemap {
         $config = IoC::get('config');
         $baseUrl = $config->baseUri;
 
+        $lastmod = date('Y-m-d', time());
+
         $posts = $post->findPosts(
             array(
                 'order' => '-created_at',
@@ -29,6 +31,7 @@ class BaiduPostSitemap {
         );
 
         $locs = '';
+        $locs .= "\n<sitemap><loc>$baseUrl/sitemap/channel.xml</loc><lastmod>$lastmod</lastmod></sitemap>\n";
 
         $paginator = new \Eva\EvaEngine\Paginator(array(
             'builder' => $posts,
@@ -38,8 +41,6 @@ class BaiduPostSitemap {
 
         $pager = $paginator->getPaginate();
         $total_pages = $pager->total_pages;
-        $lastmod = date('Y-m-d', time() - 3600*24);
-
 
         $index = 1;
         while($index <= $total_pages) {
@@ -79,30 +80,12 @@ XML;
 
         $pager = $paginator->getPaginate();
 
-        $thumb = new ThumbWithClass();
+        $lastmod = date('Y-m-d', time());
 
         foreach($pager->items as $item) {
 
             $title = $item->title;
             $content = $item->getContentHtml();
-
-            $tagString = $item->getTagString();
-            $tagArray = explode(',', $tagString);
-            $tags = '';
-            foreach($tagArray as $tag) {
-                $tags .= <<<XML
-<tag><![CDATA[ $tag ]]></tag>
-XML;
-            }
-
-            $pubTime = date($this->timeFormat, $item->createdAt);
-
-            $thumbloc = $item->image ? $thumb($item->image, 'index-news-cover') : '/img/article.jpg';
-
-            $author_nickname = $item->user->username;
-            $author_url = $baseUrl . '/news?uid=' . $item->user->id;
-
-            $lastmod = date('Y-m-d', time() - 3600*24);
 
             $urls .= <<<XML
 <url>
@@ -113,6 +96,65 @@ XML;
 </url>
 XML;
         }
+
+        $urlset = <<<XML
+<?xml version="1.0" encoding="utf-8"?>
+<urlset>
+$urls
+</urlset>
+XML;
+
+        return $urlset;
+    }
+
+    public function getChannel() {
+        $urls = '';
+        $lastmod = date('Y-m-d', time());
+
+        $urls .= <<<XML
+<url>
+    <loc>http://live.wallstreetcn.com/</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://markets.wallstreetcn.com/</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://calendar.wallstreetcn.com/</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://wallstreetcn.com/columns</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://www.goldtoutiao.com/</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://wallstreetcn.com/activities/stocktrading</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+<url>
+    <loc>http://activity.wallstreetcn.com/app/index.html</loc>
+    <lastmod>$lastmod</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+</url>
+XML;
 
         $urlset = <<<XML
 <?xml version="1.0" encoding="utf-8"?>

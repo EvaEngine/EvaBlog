@@ -86,10 +86,11 @@ XML;
 
             $title = $item->title;
             $content = $item->getContentHtml();
+            $url = $item->getUrl();
 
             $urls .= <<<XML
 <url>
-    <loc>$baseUrl/node/$item->id</loc>
+    <loc>$url</loc>
     <lastmod>$lastmod</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>

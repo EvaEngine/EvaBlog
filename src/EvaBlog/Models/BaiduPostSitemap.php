@@ -138,12 +138,6 @@ XML;
     <priority>1.0</priority>
 </url>
 <url>
-    <loc>http://www.goldtoutiao.com/</loc>
-    <lastmod>$lastmod</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>1.0</priority>
-</url>
-<url>
     <loc>http://wallstreetcn.com/activities/stocktrading</loc>
     <lastmod>$lastmod</lastmod>
     <changefreq>hourly</changefreq>

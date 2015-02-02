@@ -104,9 +104,11 @@ XML;
 
             $lastmod = date('Y-m-d', time() - 3600*24);
 
+            $url = $item->getUrl();
+
             $urls .= <<<XML
 <url>
-    <loc>$baseUrl/node/$item->id</loc>
+    <loc>$url</loc>
     <lastmod>$lastmod</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>

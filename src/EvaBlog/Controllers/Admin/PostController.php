@@ -107,12 +107,13 @@ class PostController extends ControllerBase
         $message = 'SUCCESS_POST_CREATED';
         if ($postId > 0) {
             $post = Models\Post::findFirst($postId);
+
             if (!$post) {
                 throw new Exception\ResourceNotFoundException('ERR_BLOG_POST_NOT_FOUND');
             }
+            $form->setModel($post);
             $method = 'updatePost';
             $message = 'SUCCESS_POST_UPDATED';
-
         }
         $data['status'] = $status;
         if (!$form->isFullValid($data)) {

@@ -8,15 +8,15 @@ use Eva\EvaBlog\Forms;
 use Eva\EvaEngine\Exception;
 
 /**
-* @resourceName("Post Managment")
-* @resourceDescription("Post Managment")
-*/
+ * @resourceName("Post Managment")
+ * @resourceDescription("Post Managment")
+ */
 class PostController extends ControllerBase
 {
     /**
-    * @operationName("Post List")
-    * @operationDescription("Post List")
-    */
+     * @operationName("Post List")
+     * @operationDescription("Post List")
+     */
     public function indexAction()
     {
         $limit = $this->request->getQuery('per_page', 'int', 25);
@@ -48,7 +48,7 @@ class PostController extends ControllerBase
         $posts = $post->findPosts($query);
         $paginator = new \Eva\EvaEngine\Paginator(array(
             "builder" => $posts,
-            "limit"=> $limit,
+            "limit" => $limit,
             "page" => $query['page']
         ));
         $paginator->setQuery($query);
@@ -57,9 +57,9 @@ class PostController extends ControllerBase
     }
 
     /**
-    * @operationName("Create Post")
-    * @operationDescription("Create Post")
-    */
+     * @operationName("Create Post Page")
+     * @operationDescription("Create Post Page")
+     */
     public function createAction()
     {
         $form = new Forms\PostForm();
@@ -69,11 +69,40 @@ class PostController extends ControllerBase
         $this->view->setVar('form', $form);
         $this->view->setVar('item', $post);
 
-        if (!$this->request->isPost()) {
-            return false;
-        }
+    }
+
+    /**
+     * @operationName("Save post with published status")
+     * @operationDescription("Save post with published status")
+     */
+    public function savePublishedAction()
+    {
+        return $this->savePost('published');
+    }
+
+    /**
+     * @operationName("Save post with draft status")
+     * @operationDescription("Save post with draft status")
+     */
+    public function saveDraftAction()
+    {
+        return $this->savePost('draft');
+    }
+
+    protected function savePost($status = 'draft')
+    {
+        $this->view->changeRender('admin/post/create');
+
+        $form = new Forms\PostForm();
+        $post = new Models\Post();
+        $form->setModel($post);
+        $form->addForm('text', 'Eva\EvaBlog\Forms\TextForm');
+        $this->view->setVar('form', $form);
+        $this->view->setVar('item', $post);
+
 
         $data = $this->request->getPost();
+        $data['status'] = $status;
         if (!$form->isFullValid($data)) {
             return $this->showInvalidMessages($form);
         }
@@ -89,9 +118,9 @@ class PostController extends ControllerBase
     }
 
     /**
-    * @operationName("Edit Post")
-    * @operationDescription("Edit Post")
-    */
+     * @operationName("Edit Post")
+     * @operationDescription("Edit Post")
+     */
     public function editAction()
     {
         $this->view->changeRender('admin/post/create');

@@ -38,7 +38,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     </script>
 <? endif; ?>
 <? $textForm = $form->getForm('text') ?>
-<form id="" action="" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+<form id="" action="/admin/post/save/published" method="POST" enctype="multipart/form-data" novalidate="novalidate">
     <div class="page-content">
 
         <div class="widget-box transparent">
@@ -434,7 +434,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                             </div>
                                             <div class="clearfix form-actions no-margin">
                                                 <input name="__redirect" type="hidden" value=""/>
-                                                <button type="submit" class="btn form-submiter" data-change-name="status" data-change-value="draft">
+                                                <button type="submit" class="btn form-submiter" data-change-name="status" data-change-value="draft" data-change-form="action" data-change-form-value="/admin/post/save/draft">
                                                     <i class="icon-save"></i>
                                                     Save Draft
                                                 </button>

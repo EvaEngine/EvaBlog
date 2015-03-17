@@ -57,8 +57,8 @@ class PostController extends ControllerBase
     }
 
     /**
-     * @operationName("Create Post Page")
-     * @operationDescription("Create Post Page")
+     * @operationName("Show page of post creating")
+     * @operationDescription("Show page of post creating")
      */
     public function createAction()
     {
@@ -77,7 +77,11 @@ class PostController extends ControllerBase
      */
     public function savePublishedAction()
     {
-        return $this->savePost('published');
+        $data = $this->request->getPost();
+        if ($data['id'] > 0) {
+            return $this->editPost();
+        }
+        return $this->createPost('published');
     }
 
     /**
@@ -86,10 +90,14 @@ class PostController extends ControllerBase
      */
     public function saveDraftAction()
     {
-        return $this->savePost('draft');
+        $data = $this->request->getPost();
+        if ($data['id'] > 0) {
+            return $this->editPost();
+        }
+        return $this->createPost('draft');
     }
 
-    protected function savePost($status = 'draft')
+    protected function createPost($status = 'draft')
     {
         $this->view->changeRender('admin/post/create');
 
@@ -102,37 +110,49 @@ class PostController extends ControllerBase
 
 
         $data = $this->request->getPost();
-        $postId = $data['id'];
-        $method = 'createPost';
-        $message = 'SUCCESS_POST_CREATED';
-        if ($postId > 0) {
-            $post = Models\Post::findFirst($postId);
-
-            if (!$post) {
-                throw new Exception\ResourceNotFoundException('ERR_BLOG_POST_NOT_FOUND');
-            }
-            $form->setModel($post);
-            $method = 'updatePost';
-            $message = 'SUCCESS_POST_UPDATED';
-        }
         $data['status'] = $status;
         if (!$form->isFullValid($data)) {
             return $this->showInvalidMessages($form);
         }
-
         try {
-            $form->save($method);
+            $form->save('createPost');
         } catch (\Exception $e) {
             return $this->showException($e, $form->getModel()->getMessages());
         }
-        $this->flashSession->success($message);
-
+        $this->flashSession->success('SUCCESS_POST_CREATED');
         return $this->redirectHandler('/admin/post/edit/' . $form->getModel()->id);
     }
 
+    protected function editPost()
+    {
+        $this->view->changeRender('admin/post/create');
+        $data = $this->request->getPost();
+
+        $post = Models\Post::findFirst($data['id']);
+        if (!$post) {
+            throw new Exception\ResourceNotFoundException('ERR_BLOG_POST_NOT_FOUND');
+        }
+        $form = new Forms\PostForm();
+        $form->setModel($post);
+        $form->addForm('text', 'Eva\EvaBlog\Forms\TextForm');
+        $this->view->setVar('form', $form);
+        $this->view->setVar('item', $post);
+
+        if (!$form->isFullValid($data)) {
+            return $this->showInvalidMessages($form);
+        }
+        try {
+            $form->save('updatePost');
+        } catch (\Exception $e) {
+            return $this->showException($e, $form->getModel()->getMessages());
+        }
+        $this->flashSession->success('SUCCESS_POST_UPDATED');
+        return $this->redirectHandler('/admin/post/edit/' . $post->id);
+    }
+
     /**
-     * @operationName("Edit Post")
-     * @operationDescription("Edit Post")
+     * @operationName("Show page of post editing")
+     * @operationDescription("Show page of post editing")
      */
     public function editAction()
     {

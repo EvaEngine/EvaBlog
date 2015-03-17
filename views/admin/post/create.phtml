@@ -38,7 +38,11 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     </script>
 <? endif; ?>
 <? $textForm = $form->getForm('text') ?>
+
 <form id="" action="/admin/post/save/published" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+    <? if (!empty($item->id)): ?>
+        <input type="hidden" name="id" value="<?=$item->id?>">
+    <?endif;?>
     <div class="page-content">
 
         <div class="widget-box transparent">

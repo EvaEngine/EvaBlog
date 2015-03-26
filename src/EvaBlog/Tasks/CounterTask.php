@@ -34,26 +34,29 @@ class CounterTask extends TaskBase
         $count = 0;
         $tableName = $post->getSource();
         foreach ($counterRank->getIterator(100, CounterIterator::PERSIST_WITH_DELETING) as $items) {
-            $values = '';
+//            $values = '';
             $count += count($items);
-            $ids = '';
+//            $ids = '';
             foreach ($items as $post_id => $heat) {
 
-                if ($ids != '') {
-                    $ids .= ',';
-                }
-                $ids .= $post_id;
-                $values .= " WHEN id={$post_id} THEN `count`+{$heat} ";
+//                if ($ids != '') {
+//                    $ids .= ',';
+//                }
+//                $ids .= $post_id;
+//                $values .= " WHEN id={$post_id} THEN `count`+{$heat} ";
+                $post->getWriteConnection()->execute("UPDATE {$tableName} SET `count`=`count`+{$heat} WHERE `id`={$post_id}");
+
 //                    $values .= "({$post_id}, {$heat}, '', 'private', '', 0)";
             }
-            $sql = <<<SQL
-UPDATE {$tableName} SET `count` = CASE
-    {$values}
-    ELSE `count`
-END
-WHERE `id` IN({$ids})
-SQL;
-            $post->getWriteConnection()->execute($sql);
+//            $sql = <<<SQL
+//UPDATE {$tableName} SET `count` = CASE
+//    {$values}
+//    ELSE `count`
+//END
+//WHERE `id` IN({$ids})
+//SQL;
+
+//            $post->getWriteConnection()->execute($sql);
         }
         $this->output->writelnComment('Done! Persist ' . $count . ' items;');
     }

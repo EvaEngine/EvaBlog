@@ -830,10 +830,11 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     }
 })(this, function(moment, $,_){
 
-    $('.js-categories-checkbox .lbl').each(function(){
+    $('.js-categories-checkbox input.ace').each(function(){
         var $this = $(this);
-        if($this.text().trim()=='头条') {
-            $this.text('头条(标题不超过20个字)')
+        if($this.val()=='6') {
+            var $lbl = $this.siblings('.lbl')
+            $lbl.text($lbl.text()+'(标题不超过20个字)')
         }
     })
 

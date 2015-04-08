@@ -39,7 +39,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 <? endif; ?>
 <? $textForm = $form->getForm('text') ?>
 
-<form id="" action="/admin/post/save/published" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+<form id="post-edit-form" action="/admin/post/save/published" method="POST" enctype="multipart/form-data" novalidate="novalidate">
     <? if (!empty($item->id)): ?>
         <input type="hidden" name="id" value="<?=$item->id?>">
     <?endif;?>
@@ -465,6 +465,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
                                         <div class="widget-body">
                                             <div class="widget-main">
+                                                <div style="margin:10px 0;">尺寸要求：长>=650,宽>=406</div>
                                                 <? if (!empty($item->image)): ?>
                                                 <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
                                                 <? endif ?>
@@ -491,7 +492,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                         </div>
                                         <div class="widget-body">
                                             <div class="widget-main">
-                                                <div class="control-group">
+                                                <div class="control-group js-categories-checkbox">
                                                     <? $categories = $form->getCategories() ?>
                                                     <? if ($categories): ?>
                                                     <? foreach ($categories as $key => $category): ?>
@@ -828,6 +829,23 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         factory(root.moment, root.jQuery,root._);
     }
 })(this, function(moment, $,_){
+
+    $('.js-categories-checkbox .lbl').each(function(){
+        var $this = $(this);
+        if($this.text().trim()=='头条') {
+            $this.text('头条(标题不超过20个字)')
+        }
+    })
+
+    $('#post-edit-form').submit(function(e){
+        if($('input[type=checkbox][value=6]').is(':checked')){
+            if($('#title').val().toString().length>20){
+                e.preventDefault();
+                alert('头条的标题不能超过20个字')
+            }
+        }
+    })
+
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");
         connectionUI.on('click', '[data-role="submiter"]', function () {

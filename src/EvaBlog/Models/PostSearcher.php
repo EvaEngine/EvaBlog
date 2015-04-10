@@ -264,7 +264,7 @@ class PostSearcher extends Post
         return $pager;
     }
 
-    public function getRelatedPosts($id, $limit = 5, $days = 300)
+    public function getRelatedPosts($id, $limit = 5, $days = 30)
     {
         if (!$this->getDI()->getConfig()->EvaSearch->relatedPostsEnable) {
             return array();

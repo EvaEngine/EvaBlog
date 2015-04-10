@@ -830,22 +830,52 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     }
 })(this, function(moment, $,_){
 
-//    $('.js-categories-checkbox input.ace').each(function(){
-//        var $this = $(this);
-//        if($this.val()=='6') {
-//            var $lbl = $this.siblings('.lbl')
-//            $lbl.text($lbl.text()+'(标题不超过20个字)')
-//        }
-//    })
 
-//    $('#post-edit-form').submit(function(e){
-//        if($('input[type=checkbox][value=6]').is(':checked')){
-//            if($('#title').val().toString().length>20){
-//                e.preventDefault();
-//                alert('头条的标题不能超过20个字')
-//            }
-//        }
-//    })
+    $('.js-categories-checkbox input.ace').each(function(){
+        var $this = $(this);
+        if($this.val()=='6') {
+            var $lbl = $this.siblings('.lbl')
+            $lbl.text($lbl.text()+'(标题不超过21个字)')
+        }
+    })
+
+    var commonChinesePunc=[];
+    ['，',
+        '：',
+        '。',
+        '；',
+        '“',
+        '”',
+        '！',
+        '？',
+        '【',
+        '】'].forEach(function(i){
+        commonChinesePunc[i] = i;
+    })
+    //
+    function wordCount(str){
+        var count = 0;
+        for(var i =0;i<str.length;i++){
+            var charCode = str.charCodeAt(i);
+            if(charCode<=255 || str[i] in commonChinesePunc) {
+                count += 0.5;
+            }else{
+                count +=1;
+            }
+        }
+        return count;
+    }
+
+    $('#post-edit-form').submit(function(e){
+        if($('input[type=checkbox][value=6]').is(':checked')){
+            var word = $('#title').val().toString();
+            var wc = wordCount(word);
+            if(wc>21){
+                e.preventDefault();
+                alert('头条的标题不能超过21个字,现在有：'+ wc +'个字符')
+            }
+        }
+    })
 
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");

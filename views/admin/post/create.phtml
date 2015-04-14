@@ -386,34 +386,34 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                             <!--widgex box-->
                                         </div>
 
-<!--                                        <div class="col-xs-4">-->
-<!--                                            <div class="widget-box" style="border-bottom:0px;">-->
-<!--                                                <div class="widget-header widget-header-small">-->
-<!--                                                    <h5 class="lighter">Order</h5>-->
-<!--                                                    <span class="widget-toolbar">-->
-<!--                                                        <a data-action="collapse" href="#">-->
-<!--                                                            <i class="icon-chevron-up"></i>-->
-<!--                                                        </a>-->
-<!--                                                    </span>-->
-<!--                                                </div>-->
-<!---->
-<!--                                                <div class="widget-body">-->
-<!--                                                    <div class="widget-main">-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'sortOrder',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </div>-->
-<!---->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <!--widgex box-->
-<!--                                        </div>-->
+                                        <div class="col-xs-9">
+                                            <div class="widget-box" style="border-bottom:0px;">
+                                                <div class="widget-header widget-header-small">
+                                                    <h5 class="lighter">Order</h5>
+                                                    <span class="widget-toolbar">
+                                                        <a data-action="collapse" href="#">
+                                                            <i class="icon-chevron-up"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
 
-                                        <div class="col-xs-5" style="float: right">
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+                                                      <?=
+                                                       $form->render(
+                                                           'sortOrder',
+                                                           array(
+                                                               'class' => 'form-control',
+                                                           )
+                                                       )?>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!--widgex box-->
+                                        </div>
+
+                                        <div class="col-xs-3" style="float: right">
                                             <div class="clearfix">
                                                 <input name="__redirect" type="hidden" value=""/>
                                                 <button type="submit" class="btn form-submiter" data-change-name="status" data-change-value="draft" data-change-form="action" data-change-form-value="/admin/post/save/draft">

@@ -938,6 +938,12 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         postForm.attr('action',postAction+"/push");
     });
 
+
+    //禁止回车提交表单
+    $('#post-edit-form').on('keydown', function(event) {
+       if(event.keyCode==13||event.which==13){return false}
+    });
+
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");
         connectionUI.on('click', '[data-role="submiter"]', function () {

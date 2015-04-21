@@ -935,7 +935,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     $('#appPushBtn').click(function(event) {
         var postForm=$('#post-edit-form');
         var postAction=postForm.attr('action');
-        postForm.attr('action','postAction'+"?appPush");
+        postForm.attr('action',postAction+"/push");
     });
 
     $(document).ready(function () {

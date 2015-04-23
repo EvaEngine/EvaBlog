@@ -509,7 +509,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
                                         <div class="widget-body">
                                             <div class="widget-main">
-                                                <div style="margin:10px 0;">尺寸要求：长>=650,宽>=406</div>
+                                                <div style="margin:10px 0;">尺寸要求：宽度>=650,高度>=406</div>
                                                 <? if (!empty($item->image)): ?>
                                                 <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
                                                 <? endif ?>
@@ -956,6 +956,33 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
             $('input[name=createdAt]').val(timestamp);
         }
         $('input[name=day], input[name=time]').on('change', updateCreateTime);
+    });
+
+
+    $(document).ready(function () {
+        $('.ace-file-input').on('change', function (event) {
+            var f = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = e.target.result;
+
+                var image = new Image();
+                image.onload = function () {
+                    var width = image.width;
+                    var height = image.height;
+                    if (width < 650) {
+                        alert('图片宽度不得小于650,请重新上传');
+                        $('.ace-file-input .remove').trigger('click');
+                    } else if (height < 406) {
+                        alert('图片高度不得小于406,请重新上传');
+                        $('.ace-file-input .remove').trigger('click');
+                    }
+                    image = null;
+                };
+                image.src = data;
+            };
+            reader.readAsDataURL(f);
+        });
     });
 });
 </script>

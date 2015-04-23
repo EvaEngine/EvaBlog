@@ -55,8 +55,8 @@ return array(
     'savePublishedAndPush' => array(
         'pattern' => '/admin/post/save/published/push',
         'paths' => array(
-            'module' => 'WscnAdmin',
-            'controller' => 'Post',
+            'module' => 'EvaBlog',
+            'controller' => 'Admin\Post',
             'action' => 'saveAndPushPost'
         ),
         'httpMethods' => 'POST'

@@ -1,3 +1,10 @@
+<style>
+    #appPushBtn{
+        float: right;
+        background-color: #d25a42!important;
+        border-color: #d25a42!important;
+    }
+</style>
 <div class="breadcrumbs" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -57,6 +64,10 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                         </li>
                     </ul>
                 </div>
+                <button id='appPushBtn' type="submit" class="btn btn-info form-submiter" data-change-name="status" data-change-value="published">
+                        <i class="icon-ok"></i>
+                        发推送
+                </button>
                 <? if (empty($item->id)): ?>
                 <h1>Write New Post</h1>
                 <? else: ?>
@@ -920,6 +931,18 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
             }
         }
     })
+
+    $('#appPushBtn').click(function(event) {
+        var postForm=$('#post-edit-form');
+        var postAction=postForm.attr('action');
+        postForm.attr('action',postAction+"/push");
+    });
+
+
+    //禁止回车提交表单
+    $('#post-edit-form').on('keydown', function(event) {
+       if(event.keyCode==13||event.which==13){return false}
+    });
 
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");

@@ -270,7 +270,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
                 'alias' => 'thumbnail'
             )
         );
-
+        $this->setReadConnectionService('dbUserSlave');
         parent::initialize();
     }
 

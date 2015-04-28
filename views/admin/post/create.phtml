@@ -982,8 +982,35 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     });
 
 
+
+
     $(document).ready(function () {
+
+        var imageWidth,imageHeight;
+
+        
+        $('input[type=checkbox][value=6]').on('change',function(){
+
+            if($(this).is(':checked')){
+                if (imageWidth < 650) {
+                    alert('图片宽度不得小于650,请重新上传');
+                    $('.ace-file-input .remove').trigger('click');
+                    imageWidth = 0;
+                    imageHeight = 0
+                } else if (imageHeight < 406) {
+                    alert('图片高度不得小于406,请重新上传');
+                    $('.ace-file-input .remove').trigger('click');
+                    imageWidth = 0;
+                    imageHeight = 0
+                }
+            }
+
+        });
+
         $('.ace-file-input').on('change', function (event) {
+
+
+
             var f = this.files[0];
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -993,12 +1020,23 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                 image.onload = function () {
                     var width = image.width;
                     var height = image.height;
+                    imageWidth = width;
+                    imageHeight = height;
+
+                    if(!$('input[type=checkbox][value=6]').is(':checked')){
+                        return;
+                    }
+
                     if (width < 650) {
                         alert('图片宽度不得小于650,请重新上传');
                         $('.ace-file-input .remove').trigger('click');
+                        imageWidth = 0;
+                        imageHeight = 0
                     } else if (height < 406) {
                         alert('图片高度不得小于406,请重新上传');
                         $('.ace-file-input .remove').trigger('click');
+                        imageWidth = 0;
+                        imageHeight = 0
                     }
                     image = null;
                 };

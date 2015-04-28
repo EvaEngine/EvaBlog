@@ -519,7 +519,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                         </div>
 
                                         <div class="widget-body">
-                                            <div class="widget-main">
+                                            <div class="widget-main upload-photo-area">
                                                 <div style="margin:10px 0;">尺寸要求：宽度>=650,高度>=406</div>
                                                 <? if (!empty($item->image)): ?>
                                                 <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
@@ -986,9 +986,27 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
     $(document).ready(function () {
 
+
         var imageWidth,imageHeight;
 
-        
+
+        //这个东西是后面生成的，一直去尝试得到
+        var removeIcon = $('.upload-photo-area .remove');
+
+        (function getRemoveIcon(){
+            setTimeout(function(){
+                if(removeIcon.length==0){
+                    removeIcon = $('.upload-photo-area .remove');
+                    removeIcon.click(function(){
+                        imageHeight=0;
+                        imageWidth=0;
+                    })
+                }else{
+                    getRemoveIcon();
+                }
+            },500)
+        }())
+
         $('input[type=checkbox][value=6]').on('change',function(){
 
             if($(this).is(':checked')){
@@ -1008,8 +1026,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         });
 
         $('.ace-file-input').on('change', function (event) {
-
-
 
             var f = this.files[0];
             var reader = new FileReader();

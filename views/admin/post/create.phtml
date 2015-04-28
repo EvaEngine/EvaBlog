@@ -986,9 +986,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
     $(document).ready(function () {
 
-
         var imageWidth,imageHeight;
-
 
         //这个东西是后面生成的，一直去尝试得到
         var removeIcon = $('.upload-photo-area .remove');
@@ -1012,12 +1010,12 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
             if($(this).is(':checked')){
                 if (imageWidth < 650) {
                     alert('图片宽度不得小于650,请重新上传');
-                    $('.ace-file-input .remove').trigger('click');
+                    $('.upload-photo-area .remove').trigger('click');
                     imageWidth = 0;
                     imageHeight = 0
                 } else if (imageHeight < 406) {
                     alert('图片高度不得小于406,请重新上传');
-                    $('.ace-file-input .remove').trigger('click');
+                    $('.upload-photo-area .remove').trigger('click');
                     imageWidth = 0;
                     imageHeight = 0
                 }

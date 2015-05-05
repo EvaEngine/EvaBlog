@@ -185,4 +185,14 @@ class PostController extends ControllerBase
 //
 //        return $this->redirectHandler('/admin/post/edit/' . $post->id);
     }
+
+    /**
+     * @operationName("Save post with published status")
+     * @operationDescription("Save post with published status")
+     */
+    public function saveAndPushPostAction()
+    {
+        $data = $this->request->getPost();
+        return $this->response->redirect('/admin/message/notification?nId=' . $data['id']);
+    }
 }

@@ -52,4 +52,14 @@ return array(
         'id' => 3,
     ),
 
+    'savePublishedAndPush' => array(
+        'pattern' => '/admin/post/save/published/push',
+        'paths' => array(
+            'module' => 'EvaBlog',
+            'controller' => 'Admin\Post',
+            'action' => 'saveAndPushPost'
+        ),
+        'httpMethods' => 'POST'
+    ),
+
 );

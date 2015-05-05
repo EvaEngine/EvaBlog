@@ -1,3 +1,10 @@
+<style>
+    #appPushBtn{
+        float: right;
+        background-color: #d25a42!important;
+        border-color: #d25a42!important;
+    }
+</style>
 <div class="breadcrumbs" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -57,6 +64,10 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                         </li>
                     </ul>
                 </div>
+                <button id='appPushBtn' type="submit" class="btn btn-info form-submiter" data-change-name="status" data-change-value="published">
+                        <i class="icon-ok"></i>
+                        发推送
+                </button>
                 <? if (empty($item->id)): ?>
                 <h1>Write New Post</h1>
                 <? else: ?>
@@ -509,7 +520,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
                                         <div class="widget-body">
                                             <div class="widget-main">
-                                                <div style="margin:10px 0;">尺寸要求：长>=650,宽>=406</div>
+                                                <div style="margin:10px 0;">尺寸要求：宽度>=650,高度>=406</div>
                                                 <? if (!empty($item->image)): ?>
                                                 <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
                                                 <? endif ?>
@@ -921,6 +932,18 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         }
     })
 
+    $('#appPushBtn').click(function(event) {
+        var postForm=$('#post-edit-form');
+        var postAction=postForm.attr('action');
+        postForm.attr('action',postAction+"/push");
+    });
+
+
+    //禁止回车提交表单
+    $('#post-edit-form').on('keydown', function(event) {
+       if(event.keyCode==13||event.which==13){return false}
+    });
+
     $(document).ready(function () {
         var connectionUI = $("#post-connection-entry");
         connectionUI.on('click', '[data-role="submiter"]', function () {
@@ -956,6 +979,33 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
             $('input[name=createdAt]').val(timestamp);
         }
         $('input[name=day], input[name=time]').on('change', updateCreateTime);
+    });
+
+
+    $(document).ready(function () {
+        $('.ace-file-input').on('change', function (event) {
+            var f = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = e.target.result;
+
+                var image = new Image();
+                image.onload = function () {
+                    var width = image.width;
+                    var height = image.height;
+                    if (width < 650) {
+                        alert('图片宽度不得小于650,请重新上传');
+                        $('.ace-file-input .remove').trigger('click');
+                    } else if (height < 406) {
+                        alert('图片高度不得小于406,请重新上传');
+                        $('.ace-file-input .remove').trigger('click');
+                    }
+                    image = null;
+                };
+                image.src = data;
+            };
+            reader.readAsDataURL(f);
+        });
     });
 });
 </script>

@@ -519,7 +519,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                         </div>
 
                                         <div class="widget-body">
-                                            <div class="widget-main">
+                                            <div class="widget-main upload-photo-area">
                                                 <div style="margin:10px 0;">尺寸要求：宽度>=650,高度>=406</div>
                                                 <? if (!empty($item->image)): ?>
                                                 <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
@@ -982,8 +982,49 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     });
 
 
+
+
     $(document).ready(function () {
+
+        var imageWidth,imageHeight;
+
+        //这个东西是后面生成的，一直去尝试得到
+        var removeIcon = $('.upload-photo-area .remove');
+
+        (function getRemoveIcon(){
+            setTimeout(function(){
+                if(removeIcon.length==0){
+                    removeIcon = $('.upload-photo-area .remove');
+                    removeIcon.click(function(){
+                        imageHeight=0;
+                        imageWidth=0;
+                    })
+                }else{
+                    getRemoveIcon();
+                }
+            },500)
+        }())
+
+        $('input[type=checkbox][value=6]').on('change',function(){
+
+            if($(this).is(':checked')){
+                if (imageWidth < 650) {
+                    alert('图片宽度不得小于650,请重新上传');
+                    $('.upload-photo-area .remove').trigger('click');
+                    imageWidth = 0;
+                    imageHeight = 0
+                } else if (imageHeight < 406) {
+                    alert('图片高度不得小于406,请重新上传');
+                    $('.upload-photo-area .remove').trigger('click');
+                    imageWidth = 0;
+                    imageHeight = 0
+                }
+            }
+
+        });
+
         $('.ace-file-input').on('change', function (event) {
+
             var f = this.files[0];
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -993,12 +1034,23 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                 image.onload = function () {
                     var width = image.width;
                     var height = image.height;
+                    imageWidth = width;
+                    imageHeight = height;
+
+                    if(!$('input[type=checkbox][value=6]').is(':checked')){
+                        return;
+                    }
+
                     if (width < 650) {
                         alert('图片宽度不得小于650,请重新上传');
                         $('.ace-file-input .remove').trigger('click');
+                        imageWidth = 0;
+                        imageHeight = 0
                     } else if (height < 406) {
                         alert('图片高度不得小于406,请重新上传');
                         $('.ace-file-input .remove').trigger('click');
+                        imageWidth = 0;
+                        imageHeight = 0
                     }
                     image = null;
                 };

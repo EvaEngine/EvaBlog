@@ -52,14 +52,25 @@ return array(
         'id' => 3,
     ),
 
-    'savePublishedAndPush' => array(
-        'pattern' => '/admin/post/save/published/push',
+    'pushNews' => array(
+        'pattern' => '/admin/post/push/node/(\d+)',
         'paths' => array(
             'module' => 'EvaBlog',
             'controller' => 'Admin\Post',
-            'action' => 'saveAndPushPost'
+            'action' => 'pushPost',
+            'id' => 1
         ),
-        'httpMethods' => 'POST'
+        'httpMethods' => 'GET'
+    ),
+    'pushEmptyNews' => array(
+        'pattern' => '/admin/post/push/node',
+        'paths' => array(
+            'module' => 'EvaBlog',
+            'controller' => 'Admin\Post',
+            'action' => 'pushEmptyPost',
+            'id' => 1
+        ),
+        'httpMethods' => 'GET'
     ),
 
 );

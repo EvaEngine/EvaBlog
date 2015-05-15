@@ -64,10 +64,10 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                         </li>
                     </ul>
                 </div>
-                <button id='appPushBtn' type="submit" class="btn btn-info form-submiter" data-change-name="status" data-change-value="published">
+                <a href="/admin/post/push<?=$item->getAbsoluteUrl()?>" id='appPushBtn' class="btn btn-info form-submiter" data-change-name="status" data-change-value="published">
                         <i class="icon-ok"></i>
                         发推送
-                </button>
+                </a>
                 <? if (empty($item->id)): ?>
                 <h1>Write New Post</h1>
                 <? else: ?>

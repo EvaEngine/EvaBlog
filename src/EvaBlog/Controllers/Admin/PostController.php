@@ -187,12 +187,22 @@ class PostController extends ControllerBase
     }
 
     /**
-     * @operationName("Save post with published status")
-     * @operationDescription("Save post with published status")
+     * @operationName("Push Post")
+     * @operationDescription("Push Post")
      */
-    public function saveAndPushPostAction()
+    public function pushPostAction($id)
     {
         $data = $this->request->getPost();
-        return $this->response->redirect('/admin/message/notification?nId=' . $data['id']);
+        return $this->response->redirect('/admin/message/notification?nId=' . $id);
+    }
+
+    /**
+     * @operationName("Push Post")
+     * @operationDescription("Push Post")
+     */
+    public function pushEmptyPostAction()
+    {
+        $data = $this->request->getPost();
+        return $this->response->redirect('/admin/message/notification');
     }
 }

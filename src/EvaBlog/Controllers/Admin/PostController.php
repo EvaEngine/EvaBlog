@@ -193,7 +193,7 @@ class PostController extends ControllerBase
     public function pushPostAction($id)
     {
         $data = $this->request->getPost();
-        return $this->response->redirect('/admin/message/notification?nId=' . $id);
+        return $this->response->redirect('admin/message/notification?nId=' . $id);
     }
 
     /**
@@ -203,6 +203,6 @@ class PostController extends ControllerBase
     public function pushEmptyPostAction()
     {
         $data = $this->request->getPost();
-        return $this->response->redirect('/admin/message/notification');
+        return $this->response->redirect('admin/message/notification');
     }
 }

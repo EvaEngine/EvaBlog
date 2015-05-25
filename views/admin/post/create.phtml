@@ -921,16 +921,16 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         return count;
     }
 
-    $('#post-edit-form').submit(function(e){
-        if($('input[type=checkbox][value=6]').is(':checked')){
-            var word = $('#title').val().toString();
-            var wc = wordCount(word);
-            if(wc>21){
-                e.preventDefault();
-                alert('头条的标题不能超过21个字,现在有：'+ wc +'个字符')
-            }
-        }
-    })
+//    $('#post-edit-form').submit(function(e){
+//        if($('input[type=checkbox][value=6]').is(':checked')){
+//            var word = $('#title').val().toString();
+//            var wc = wordCount(word);
+//            if(wc>21){
+//                e.preventDefault();
+//                alert('头条的标题不能超过21个字,现在有：'+ wc +'个字符')
+//            }
+//        }
+//    })
 
     $('#appPushBtn').click(function(event) {
         var postForm=$('#post-edit-form');

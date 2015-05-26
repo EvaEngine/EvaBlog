@@ -349,7 +349,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             '/src="(\/.+(png|jpg|jpeg|gif))?"/',
             function ($matches) use ($staticUri) {
                 $thumb = new ThumbWithClass();
-                $imageUrl = $thumb->__invoke($matches[1], 'article-foil');
+                $imageUrl = $thumb->__invoke($matches[1], 'article.foil');
 
                 return 'src="' . $imageUrl . '"';
             },

@@ -449,7 +449,6 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         if (!$uri) {
             return null;
         }
-        dd($this->image);
         $tag = $this->getDI()->getTag();
         return $tag::thumb($uri);
     }

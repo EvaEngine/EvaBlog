@@ -4,6 +4,7 @@ namespace Eva\EvaBlog\Entities;
 
 use Eva\EvaBlog\Entities\Texts;
 use Eva\EvaEngine\IoC;
+use Eva\EvaFileSystem\ViewHelpers\ThumbWithClass;
 use Phalcon\Text;
 
 class Posts extends \Eva\EvaEngine\Mvc\Model
@@ -345,7 +346,11 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         $contentHtml = preg_replace_callback(
             '/src="(\/[^"]+)\.(png|jpg|jpeg|gif)"/',
             function ($matches) use ($staticUri) {
-                return 'src="' . $staticUri . $matches[1] . ',w_640.' . $matches[2] . '"';
+//                dd($matches);
+                $thumb = new ThumbWithClass();
+
+                $imageUrl = $thumb->__invoke($matches[1], 'article.foil', 'default');
+                return 'src="' . $imageUrl . '"';
             },
             $contentHtml
         );
@@ -444,6 +449,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         if (!$uri) {
             return null;
         }
+        dd($this->image);
         $tag = $this->getDI()->getTag();
         return $tag::thumb($uri);
     }

@@ -130,7 +130,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                                             <i class="icon-cloud-upload align-top bigger-125"></i>
                                                             Upload Media
                                                             <input type="file" multiple class="editor-upload-handle"
-                                                            data-connect-editor=".editor-content"/>
+                                                            data-connect-editor=".editor-content" data-style-name="article.foil"/>
                                                         </span>
 
                                                         <ul id="switch-code" class="nav nav-tabs hide">
@@ -522,7 +522,7 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                             <div class="widget-main upload-photo-area">
                                                 <div style="margin:10px 0;">尺寸要求：宽度>=650,高度>=406</div>
                                                 <? if (!empty($item->image)): ?>
-                                                <img src="<?= $this->tag->thumb($item->image, 'w_300') ?>" alt="" width="100%"/>
+                                                <img src="<?= $this->tag->thumbWithClass($item->image, 'index-news-cover') ?>" alt="" width="100%"/>
                                                 <? endif ?>
                                                 <div class="paste-uploader" data-upload-url="/admin/upload/encode" data-upload-allow-num="1"
                                                     data-upload-allow-type="" data-upload-maxsize="" data-callback="">

@@ -348,12 +348,13 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             function ($matches) use ($staticUri) {
 //                dd($matches);
                 $thumb = new ThumbWithClass();
+                $imageUrl = $thumb->__invoke($matches[1] . '.' . $matches[2], 'article.foil', 'default');
 
-                $imageUrl = $thumb->__invoke($matches[1], 'article.foil', 'default');
                 return 'src="' . $imageUrl . '"';
             },
             $contentHtml
         );
+
         return $contentHtml;
     }
 
@@ -370,6 +371,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         } else {
             $html = $this->summary;
         }
+
         return $this->replaceStaticFiles($html);
     }
 
@@ -393,6 +395,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
     public function getUrlPath()
     {
         $self = $this;
+
         return preg_replace_callback(
             '/{{(.+?)}}/',
             function ($matches) use ($self) {
@@ -406,6 +409,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
     {
         $url = $this->getDI()->getUrl();
         $self = $this;
+
         return $url->get($this->getUrlPath());
     }
 
@@ -415,6 +419,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
 
         $postDomain = $postDomain && !preg_match('/http(s?):\/\//i',
             $postDomain) ? 'http://' . $postDomain : $postDomain;
+
         return $postDomain . $this->getUrlPath();
     }
 
@@ -440,6 +445,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         if (!$this->image) {
             return null;
         }
+
         return $this->getImageUrlByUri($this->image);
 
     }
@@ -450,6 +456,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             return null;
         }
         $tag = $this->getDI()->getTag();
+
         return $tag::thumb($uri);
     }
 }

@@ -338,21 +338,18 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         $contentHtml = preg_replace_callback(
             '/href="(\/.+(png|jpg|jpeg|gif))?"/',
             function ($matches) use ($staticUri) {
-//                dd($matches);
                 $thumb = new ThumbWithClass();
-                $imageUrl = $thumb->__invoke($matches[1] . '.' . $matches[2], '');
+                $imageUrl = $thumb->__invoke($matches[1], '');
 
                 return 'href="' . $imageUrl . '"';
             },
             $contentHtml
         );
-
         $contentHtml = preg_replace_callback(
-            '/src="(\/[^"]+)\.(png|jpg|jpeg|gif)"/',
+            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
             function ($matches) use ($staticUri) {
-//                dd($matches);
                 $thumb = new ThumbWithClass();
-                $imageUrl = $thumb->__invoke($matches[1] . '.' . $matches[2], 'article.foil', 'default');
+                $imageUrl = $thumb->__invoke($matches[1], 'article-foil');
 
                 return 'src="' . $imageUrl . '"';
             },

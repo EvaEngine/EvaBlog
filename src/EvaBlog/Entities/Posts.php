@@ -440,23 +440,23 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
     }
 
-    public function getImageUrl()
+    public function getImageUrl($style = '')
     {
         if (!$this->image) {
             return null;
         }
 
-        return $this->getImageUrlByUri($this->image);
+        return $this->getImageUrlByUri($this->image, $style);
 
     }
 
-    public function getImageUrlByUri($uri)
+    public function getImageUrlByUri($uri, $style = '')
     {
         if (!$uri) {
             return null;
         }
-        $tag = $this->getDI()->getTag();
+        $thumbWithClass = new ThumbWithClass();
 
-        return $tag::thumb($uri);
+        return $thumbWithClass->__invoke($uri, $style);
     }
 }

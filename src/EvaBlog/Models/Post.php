@@ -238,22 +238,6 @@ class Post extends Entities\Posts
                 ->andWhere('_cate.categoryId = :cid:', array('cid' => $query['cid']));
         }
 
-        if (!empty($query['cid'])) {
-            $cidArray = explode(',', $query['cid']);
-            $setArray = array();
-            $valueArray = array();
-            foreach ($cidArray as $key => $cid) {
-                $setArray[] = "FIND_IN_SET(:cid_$key:, categorySet)";
-                $valueArray["cid_$key"] = $cid;
-            }
-
-            $itemQuery->andWhere(implode(' OR ', $setArray), $valueArray);
-            /*
-            $itemQuery->join('Eva\EvaLivenews\Entities\CategoriesNews', 'id = r.newsId', 'r')
-            ->andWhere('r.categoryId = :cid:', array('cid' => $query['cid']));
-            */
-        }
-
         if (!empty($query['tag'])) {
             $tag = Entities\Tags::findFirst("tagName = '{$query['tag']}'");
             if ($tag) {

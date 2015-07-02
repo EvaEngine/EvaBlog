@@ -37,7 +37,7 @@
 </div>
 
 <?
-$flashOutput = trim(strip_tags($this->tag->flashOutput()));
+$flashOutput = trim(strip_tags($this->tag->flashOutput(false)));
 if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     <script>
         var refreshSrc="<?= $item->getAbsoluteUrl() ?>?_eva_refresh_dispatch_cache="+Date.now();

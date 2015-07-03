@@ -47,7 +47,7 @@ class Stars extends \Eva\EvaEngine\Mvc\Model
     protected $tableName = 'blog_stars';
 
 
-    public $cachePrefix = 'eva_blog_stars_';
+    public $cachePrefix = 'eva_common_stars_';
 
     public $cacheTime = 86400;  //一天
 

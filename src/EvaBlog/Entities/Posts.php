@@ -336,8 +336,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         }
 
         $contentHtml = preg_replace_callback(
-            '/href="(http:\/\/.+?(png|jpg|jpeg|gif))(!article.foil)?"/',
-//          '/href="(\/.+(png|jpg|jpeg|gif))?"/',
+//            '/href="((http:\/\/)?.+?(png|jpg|jpeg|gif))(!article.foil)?"/',
+          '/href="(\/.+(png|jpg|jpeg|gif))?"/',
 
             function ($matches) use ($staticUri) {
                 $thumb = new ThumbWithClass();
@@ -349,8 +349,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
 
         $contentHtml = preg_replace_callback(
-            '/src="(http:\/\/.+?(png|jpg|jpeg|gif))"/',
-//            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
+//            '/src="((http:\/\/)?.+?(png|jpg|jpeg|gif))"/',
+            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
             function ($matches) use ($staticUri) {
                 $thumb = new ThumbWithClass();
                 $imageUrl = $thumb->__invoke($matches[1], 'article.foil');

@@ -336,8 +336,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         }
 
         $contentHtml = preg_replace_callback(
-//            '/href="((http:\/\/)?.+?(png|jpg|jpeg|gif))(!article.foil)?"/',
-          '/href="(\/.+(png|jpg|jpeg|gif))?"/',
+            '/href="((http:\/)?.+?\/.+?(png|jpg|jpeg|gif))(!article.foil)?"/',
+//            '/href="(\/.+(png|jpg|jpeg|gif))?"/',
 
             function ($matches) use ($staticUri) {
                 $thumb = new ThumbWithClass();
@@ -349,11 +349,18 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
 
         $contentHtml = preg_replace_callback(
-//            '/src="((http:\/\/)?.+?(png|jpg|jpeg|gif))"/',
-            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
+            '/src="((http:\/)?.+?\/.+?(png|jpg|jpeg|gif))?"/',
+//            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
+
             function ($matches) use ($staticUri) {
                 $thumb = new ThumbWithClass();
-                $imageUrl = $thumb->__invoke($matches[1], 'article.foil');
+                if (starts_with($matches[1], 'http://') && (!starts_with($matches[1], 'http://posts.cdn.wallstcn.com'))) {
+                    //站外资源不加缩略图后缀后缀 如 http://www.baidu.com/abc.jpg
+                    $imageUrl = $thumb->__invoke($matches[1], '');
+                } else {
+                    //站内(posts.cdn.wallstcn.com)资源，添加缩略图后缀 article.foil
+                    $imageUrl = $thumb->__invoke($matches[1], 'article.foil');
+                }
 
                 return 'src="' . $imageUrl . '"';
             },

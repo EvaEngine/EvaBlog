@@ -336,7 +336,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         }
 
         $contentHtml = preg_replace_callback(
-            '/href="((http:\/)?.+?\/.+?(png|jpg|jpeg|gif))(!article.foil)?"/',
+            '/href="(.+?(png|jpg|jpeg|gif))(!article\.foil)?"/',
 //            '/href="(\/.+(png|jpg|jpeg|gif))?"/',
 
             function ($matches) use ($staticUri) {
@@ -349,7 +349,7 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         );
 
         $contentHtml = preg_replace_callback(
-            '/src="((http:\/)?.+?\/.+?(png|jpg|jpeg|gif))?"/',
+            '/src="(.+?(png|jpg|jpeg|gif))(!article\.foil)?"/',
 //            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
 
             function ($matches) use ($staticUri) {

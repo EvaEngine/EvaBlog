@@ -331,6 +331,8 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
         $thumbnail = $this->getDI()->getConfig()->thumbnail->default;
         $staticUri = $thumbnail->baseUri;
 
+        $filesystemBaseUrl  = $this->getDI()->getConfig()->filesystem->default->baseUrl;
+
         if (!$thumbnail->enable || !$staticUri || false === strpos($contentHtml, '<img')) {
             return $contentHtml;
         }
@@ -352,9 +354,9 @@ class Posts extends \Eva\EvaEngine\Mvc\Model
             '/src="(.+?(png|jpg|jpeg|gif))(!article\.foil)?"/',
 //            '/src="(\/.+(png|jpg|jpeg|gif))?"/',
 
-            function ($matches) use ($staticUri) {
+            function ($matches) use ($staticUri, $filesystemBaseUrl) {
                 $thumb = new ThumbWithClass();
-                if (starts_with($matches[1], 'http://') && (!starts_with($matches[1], 'http://posts.cdn.wallstcn.com'))) {
+                if (starts_with($matches[1], 'http://') && (!starts_with($matches[1], $filesystemBaseUrl))) {
                     //站外资源不加缩略图后缀后缀 如 http://www.baidu.com/abc.jpg
                     $imageUrl = $thumb->__invoke($matches[1], '');
                 } else {

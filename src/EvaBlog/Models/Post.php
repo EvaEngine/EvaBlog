@@ -481,4 +481,12 @@ class Post extends Entities\Posts
 
         return false;
     }
+
+    /*
+     *
+     */
+    public static function getPosts()
+    {
+
+    }
 }

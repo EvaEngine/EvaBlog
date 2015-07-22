@@ -482,11 +482,16 @@ class Post extends Entities\Posts
         return false;
     }
 
-    /*
-     *
+    /**
+     * 获取时间区间内的文章
+     * @param $start
+     * @param $end
      */
-    public static function getPosts()
+    public static function findPostsBetween($start, $end)
     {
+        $conditions = "createdAt > $start AND createdAt < $end";
+        $posts = self::find($conditions);
 
+        return $posts;
     }
 }

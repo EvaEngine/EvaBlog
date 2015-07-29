@@ -549,210 +549,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--widgex box-->
-
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Tags</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-up"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="form-group">-->
-<!--                                                    <input type="text" placeholder="Enter Tags ..." value="--><?//= $item ? $item->getTagString() : '' ?><!--"-->
-<!--                                                    name="tags" class="tag-input form-control">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Comment Status</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-down"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="control-group">-->
-<!--                                                    <label class="block clearfix">-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'commentStatus',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Type</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-down"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="control-group">-->
-<!--                                                    <label class="block clearfix">-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'type',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box collapsed">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Publish Time</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-down"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="input-group">-->
-<!--                                                    <input name="day" type="text" data-date-format="yyyy-mm-dd" class="form-control date-picker"-->
-<!--                                                    value="--><?//= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'Y-m-d') ?><!--">-->
-<!--                                                    <span class="input-group-addon">-->
-<!--                                                        <i class="icon-calendar bigger-110"></i>-->
-<!--                                                    </span>-->
-<!--                                                </div>-->
-<!--                                                <div class="input-group bootstrap-timepicker">-->
-<!--                                                    <input name="time" type="text" class="form-control time-picker"-->
-<!--                                                    value="--><?//= empty($item->createdAt) ? '' : $this->tag->datetime($item->createdAt, 'H:i:s') ?><!--">-->
-<!--                                                    <span class="input-group-addon">-->
-<!--                                                        <i class="icon-time bigger-110"></i>-->
-<!--                                                    </span>-->
-<!--                                                    --><?//=
-//                                                    $form->render(
-//                                                        'createdAt',
-//                                                        array()
-//                                                    )?>
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box collapsed">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Change Author</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-down"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="control-group">-->
-<!--                                                    <label class="block clearfix">-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'username',
-//                                                            array(
-//                                                                'class' => 'form-control autocomplete',
-//                                                                'data-autocomplete-source' => '/admin/user/process/suggestions?query=%QUERY',
-//                                                                'data-autocomplete-target' => 'input[name=userId]',
-//                                                                'data-autocomplete-fill-name' => 'id',
-//                                                                'data-autocomplete-display-key' => 'username',
-//                                                                'data-autocomplete-clear-fill-when-nomatch' => '1',
-//                                                                'placeholder' => 'Use current user with no fill',
-//                                                            )
-//                                                        )?>
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'userId',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
-<!--                                    <div class="hr hr-double dotted"></div>-->
-<!--                                    <div class="widget-box collapsed">-->
-<!--                                        <div class="widget-header widget-header-small">-->
-<!--                                            <h5 class="lighter">Post Source</h5>-->
-<!--                                            <span class="widget-toolbar">-->
-<!--                                                <a data-action="collapse" href="#">-->
-<!--                                                    <i class="icon-chevron-down"></i>-->
-<!--                                                </a>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-<!---->
-<!--                                        <div class="widget-body">-->
-<!--                                            <div class="widget-main">-->
-<!--                                                <div class="control-group">-->
-<!--                                                    <label class="block clearfix">-->
-<!--                                                        Source Name-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'sourceName',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                                <div class="control-group">-->
-<!--                                                    <label class="block clearfix">-->
-<!--                                                        Source Url-->
-<!--                                                        --><?//=
-//                                                        $form->render(
-//                                                            'sourceUrl',
-//                                                            array(
-//                                                                'class' => 'form-control',
-//                                                            )
-//                                                        )?>
-<!--                                                    </label>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-                                    <!--widgex box-->
-
                                 </div>
                                 <!-- /.col -->
 
@@ -855,7 +651,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     </div>
     <!-- /.page-content -->
 </form>
-
 <script>
 (function(root, factory){
     if (typeof define === 'function' && define.amd) {
@@ -874,20 +669,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         }
     })
 
-    var commonChinesePunc=[];
-    ['，',
-        '：',
-        '。',
-        '；',
-        '“',
-        '”',
-        '！',
-        '？',
-        '【',
-        '】'].forEach(function(i){
-        commonChinesePunc[i] = i;
-    })
-    //
     function wordCount(str){
         var count = 0;
         for(var i =0;i<str.length;i++){
@@ -900,17 +681,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         }
         return count;
     }
-
-//    $('#post-edit-form').submit(function(e){
-//        if($('input[type=checkbox][value=6]').is(':checked')){
-//            var word = $('#title').val().toString();
-//            var wc = wordCount(word);
-//            if(wc>21){
-//                e.preventDefault();
-//                alert('头条的标题不能超过21个字,现在有：'+ wc +'个字符')
-//            }
-//        }
-//    })
 
     $('#appPushBtn').click(function(event) {
         var postForm=$('#post-edit-form');

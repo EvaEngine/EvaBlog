@@ -1,3 +1,10 @@
+<?
+$this->assets
+    ->collection('headerCss')
+    ->addCss('/admin/build_css/draft/draft-save_build.css')
+
+?>
+
 <style>
     #appPushBtn{
         float: right;
@@ -106,6 +113,8 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
                                                 <div class="widget-toolbar no-border ">
                                                     <div class="btn-group">
+                                                        <span class="btn btn-sm" id="content-history">本地草稿</span>
+
                                                         <span class="btn btn-sm btn-purple fileinput-button">
                                                             <i class="icon-cloud-upload align-top bigger-125"></i>
                                                             Upload Media
@@ -660,7 +669,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
     }
 })(this, function(moment, $,_){
 
-
     $('.js-categories-checkbox input.ace').each(function(){
         var $this = $(this);
         if($this.val()=='6') {
@@ -669,25 +677,11 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         }
     })
 
-    function wordCount(str){
-        var count = 0;
-        for(var i =0;i<str.length;i++){
-            var charCode = str.charCodeAt(i);
-            if(charCode<=255 || str[i] in commonChinesePunc) {
-                count += 0.5;
-            }else{
-                count +=1;
-            }
-        }
-        return count;
-    }
-
     $('#appPushBtn').click(function(event) {
         var postForm=$('#post-edit-form');
         var postAction=postForm.attr('action');
         postForm.attr('action',postAction+"/push");
     });
-
 
     //禁止回车提交表单
     $('#post-edit-form').on('keydown', function(event) {
@@ -731,9 +725,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         $('input[name=day], input[name=time]').on('change', updateCreateTime);
     });
 
-
-
-
     $(document).ready(function () {
 
         var imageWidth,imageHeight;
@@ -743,14 +734,14 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
 
         (function getRemoveIcon(){
             setTimeout(function(){
+                removeIcon = $('.upload-photo-area .remove');
                 if(removeIcon.length==0){
-                    removeIcon = $('.upload-photo-area .remove');
+                    getRemoveIcon();
+                }else{
                     removeIcon.click(function(){
                         imageHeight=0;
                         imageWidth=0;
                     })
-                }else{
-                    getRemoveIcon();
                 }
             },500)
         }())
@@ -770,7 +761,6 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
                     imageHeight = 0
                 }
             }
-
         });
 
         $('.ace-file-input').on('change', function (event) {
@@ -810,4 +800,63 @@ if ($flashOutput == 'SUCCESS_POST_UPDATED'):?>
         });
     });
 });
+</script>
+
+<!--本地草稿功能-->
+<div class="draft-save-fixed-wrapper" style="display: none">
+    <div class="draft-save-modal">
+        <div class="close">×</div>
+        <div class="ds-tabs">
+            <div class="tab-title">2010001241</div>
+        </div>
+        <div class="ds-content"></div>
+    </div>
+</div>
+
+<script>
+    require(["jquery",'common/dist/LsWrapper','moment'],function($,LsWrapper,moment){
+        var contentStorage = new LsWrapper({ns:'post_create',limit:15})
+        var contentKey= ''
+
+        function draftSave(){
+            if(contentKey){
+                contentStorage.setItem(contentKey,$('#content').val());
+            }else{
+                var content = $('#content').val();
+                if(content.trim()==''){return;}
+                contentKey= contentStorage.addItem(content)
+            }
+        }
+        setInterval(draftSave,20*1000)
+
+        $('#content-history').click(function(){
+            var keys = contentStorage.getKeys();
+            if(keys.length<2){
+                alert('没有更多的草稿')
+                return;
+            }
+            var titlesStr=''
+            for(var i = keys.length-1;i>=0;i--){
+                var key = keys[i]
+                if(key == contentKey){continue}
+                var keyStr = moment(+key).format('MMDD,HH:mm:ss');
+                titlesStr+='<div class="tab-title" data-key='+key+'>'+keyStr+'</div>'
+            }
+            $('.ds-tabs').html(titlesStr);
+            $('.ds-tabs .tab-title').eq(0).trigger('click');
+
+            $('.draft-save-fixed-wrapper').show();
+        })
+
+        $('.ds-tabs').on('click','.tab-title',function(){
+            $('.tab-title').removeClass('active');
+            $(this).addClass('active')
+            var key = $(this).attr('data-key');
+            $('.ds-content').html(contentStorage.getItem(key))
+        })
+
+        $('.draft-save-modal .close').on('click',function(){
+            $('.draft-save-fixed-wrapper').hide();
+        })
+    })
 </script>

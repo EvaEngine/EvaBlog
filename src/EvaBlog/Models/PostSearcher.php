@@ -250,7 +250,7 @@ class PostSearcher extends Post
         $pager = new PurePaginator($searchParams['size'], $ret['hits']['total'], $ret['hits']['hits']);
 
 
-        if ($query['increase'] !== false) {
+        if (isset($query['increase']) && $query['increase'] !== false) {
             //使用redis进行关键词统计
             $countrRankUtil = new CounterRankUtil();
             $countrRank = $countrRankUtil->getCounterRank("keywords");

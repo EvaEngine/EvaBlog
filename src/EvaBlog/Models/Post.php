@@ -510,5 +510,5 @@ class Post extends Entities\Posts
         return $posts;
     }
 
-    const CONTENT_SIZE_LIMIT = 800 * 1024;// 800 KB
+    const CONTENT_SIZE_LIMIT =819200;// 800 KB
 }

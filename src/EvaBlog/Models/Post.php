@@ -279,6 +279,7 @@ class Post extends Entities\Posts
             $order = implode(', ', $order);
         }
         $itemQuery->orderBy($order);
+
         return $itemQuery;
     }
 
@@ -307,6 +308,8 @@ class Post extends Entities\Posts
             $text = new Text();
             $text->assign($textData);
             $this->text = $text;
+            $content = isset($textData['content']) ? $textData['content'] : null;
+            $this->limitContentSize($content);
         }
 
         $tags = array();
@@ -381,6 +384,8 @@ class Post extends Entities\Posts
             $text = new Text();
             $text->assign($textData);
             $this->text = $text;
+            $content = isset($textData['content']) ? $textData['content'] : null;
+            $this->limitContentSize($content);
         }
 
 
@@ -451,6 +456,16 @@ class Post extends Entities\Posts
         return $this;
     }
 
+    private function limitContentSize($content)
+    {
+        $size = mb_strlen($content, '8bit');
+        if ($size > self::CONTENT_SIZE_LIMIT) {
+            throw new Exception\InvalidArgumentException('CONTENT_SIZE_TOO_LARGE');
+        }
+
+        return true;
+    }
+
     public function removePost($id)
     {
         $this->id = $id;
@@ -494,4 +509,6 @@ class Post extends Entities\Posts
 
         return $posts;
     }
+
+    const CONTENT_SIZE_LIMIT = 800 * 1024;// 800 KB
 }

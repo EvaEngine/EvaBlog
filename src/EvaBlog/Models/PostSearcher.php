@@ -31,9 +31,14 @@ class PostSearcher extends Post
     {
         parent::initialize();
         $this->es_config = $this->getDI()->getConfig()->EvaSearch->elasticsearch->toArray();
-        $this->es_client = new Client(array(
+        $params = [
             'hosts' => $this->es_config['servers']
-        ));
+        ];
+        $params['guzzleOptions']['command.request_options'] = [
+            'connect_timeout' => 1.0,
+            'timeout' => 1.0
+        ];
+        $this->es_client = new Client($params);
     }
 
     public function searchPosts(array $query = array())

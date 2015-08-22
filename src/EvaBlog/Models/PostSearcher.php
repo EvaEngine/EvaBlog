@@ -34,9 +34,11 @@ class PostSearcher extends Post
         $params = [
             'hosts' => $this->es_config['servers']
         ];
-        $params['guzzleOptions']['command.request_options'] = [
-            'connect_timeout' => 1.0,
-            'timeout' => 1.0
+        $params['guzzleOptions'] = [
+            'curl.options'=> [
+                CURLOPT_CONNECTTIMEOUT => 1.0,
+                CURLOPT_TIMEOUT => 1.0,
+            ]
         ];
         $this->es_client = new Client($params);
     }
